@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EnrollX – A premium student course registration portal for universities. Enroll in courses, view results, and manage your academic journey seamlessly.">
+  <title>EnrollX – Student Course Registration Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <style>
+    /* Landing Footer */
+    .landing-footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-color);
+      padding: 3rem 0 1.5rem;
+    }
+    .landing-footer .footer-brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 0.5rem;
+    }
+    .landing-footer .footer-brand i {
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.3rem;
+    }
+    .landing-footer .footer-desc {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      max-width: 300px;
+    }
+    .landing-footer h6 {
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+    .landing-footer .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .landing-footer .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+    .landing-footer .footer-links a {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      transition: color var(--transition-fast);
+    }
+    .landing-footer .footer-links a:hover {
+      color: var(--primary-500);
+    }
+    .landing-footer .footer-bottom {
+      border-top: 1px solid var(--border-color);
+      padding-top: 1.5rem;
+      margin-top: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* Dashboard Preview Mockup in Hero */
+    .dashboard-preview {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      padding: 0;
+      overflow: hidden;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+    }
+    .dashboard-preview .preview-topbar {
+      background: var(--gradient-primary);
+      padding: 0.7rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dashboard-preview .preview-topbar .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dashboard-preview .preview-topbar .dot.red { background: #ef4444; }
+    .dashboard-preview .preview-topbar .dot.yellow { background: #f59e0b; }
+    .dashboard-preview .preview-topbar .dot.green { background: #10b981; }
+    .dashboard-preview .preview-topbar span {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.75rem;
+      margin-left: auto;
+    }
+    .dashboard-preview .preview-body {
+      padding: 1.2rem;
+    }
+    .dashboard-preview .preview-stat {
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-sm);
+      padding: 0.8rem;
+      text-align: center;
+    }
+    .dashboard-preview .preview-stat .num {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--primary-500);
+    }
+    .dashboard-preview .preview-stat .label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .dashboard-preview .preview-row {
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 0.8rem;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+    .dashboard-preview .preview-row .dot-status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    /* Stats counter strip */
+    .stats-strip {
+      padding: 4rem 0;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .stats-strip .stat-item {
+      text-align: center;
+    }
+    .stats-strip .stat-item .stat-number {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.3rem;
+    }
+    .stats-strip .stat-item .stat-label {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <!-- Gradient Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-enrollx" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="bi bi-mortarboard-fill"></i> EnrollX
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center gap-1">
+          <li class="nav-item"><a class="nav-link active" href="#features">Features</a></li>
+          <li class="nav-item"><a class="nav-link" href="#how-it-works">How it Works</a></li>
+          <li class="nav-item"><a class="nav-link" href="login.html"><i class="bi bi-person-circle me-1"></i>Student Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="faculty-login.html"><i class="bi bi-person-workspace me-1"></i>Faculty</a></li>
+          <li class="nav-item ms-lg-2">
+            <a class="btn btn-white btn-enrollx" href="register.html">
+              <i class="bi bi-person-plus-fill me-1"></i>Register Now
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="hero">
+    <div class="hero-shapes">
+      <div class="h-shape h-shape-1"></div>
+      <div class="h-shape h-shape-2"></div>
+      <div class="h-shape h-shape-3"></div>
+      <div class="h-shape h-shape-4"></div>
+    </div>
+
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 hero-content">
+          <div class="hero-badge">
+            <i class="bi bi-lightning-charge-fill"></i>
+            <span>Smart University Registration System</span>
+          </div>
+          <h1>Your Academic<br>Journey Starts<br><span class="highlight">Right Here</span></h1>
+          <p class="hero-description">
+            EnrollX streamlines course registration, enrollment management, result tracking, and GPA calculation — all in one beautifully designed portal built for modern universities.
+          </p>
+          <div class="hero-buttons">
+            <a href="register.html" class="btn btn-white btn-enrollx">
+              <i class="bi bi-rocket-takeoff me-2"></i>Get Started Free
+            </a>
+            <a href="#features" class="btn btn-outline-enrollx btn-enrollx">
+              <i class="bi bi-play-circle me-2"></i>Explore Features
+            </a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <div class="stat-num">12+</div>
+              <div class="stat-text">Courses</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num">3</div>
+              <div class="stat-text">Departments</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num">100%</div>
+              <div class="stat-text">Real-time</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 hero-image d-none d-lg-block">
+          <div class="hero-img-container">
+            <!-- Dashboard Preview Mockup -->
+            <div class="dashboard-preview">
+              <div class="preview-topbar">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+                <span>EnrollX Dashboard</span>
+              </div>
+              <div class="preview-body">
+                <div class="row g-2 mb-2">
+                  <div class="col-4">
+                    <div class="preview-stat">
+                      <div class="num">6</div>
+                      <div class="label">ENROLLED</div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="preview-stat">
+                      <div class="num" style="color:var(--success);">8.7</div>
+                      <div class="label">CGPA</div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="preview-stat">
+                      <div class="num" style="color:var(--purple-600);">24</div>
+                      <div class="label">CREDITS</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="preview-row">
+                  <div class="dot-status"></div>
+                  <span style="font-weight:600;color:var(--text-primary);">CS301 - Data Structures</span>
+                  <span class="ms-auto" style="color:var(--success);font-weight:700;">A+</span>
+                </div>
+                <div class="preview-row">
+                  <div class="dot-status"></div>
+                  <span style="font-weight:600;color:var(--text-primary);">MA201 - Linear Algebra</span>
+                  <span class="ms-auto" style="color:var(--primary-500);font-weight:700;">O</span>
+                </div>
+                <div class="preview-row">
+                  <div class="dot-status" style="background:var(--warning);"></div>
+                  <span style="font-weight:600;color:var(--text-primary);">EC301 - Digital Electronics</span>
+                  <span class="ms-auto" style="color:var(--warning);font-weight:700;">B+</span>
+                </div>
+              </div>
+            </div>
+            <!-- Floating Cards -->
+            <div class="floating-card card-1">
+              <div class="fc-icon green"><i class="bi bi-check-circle-fill"></i></div>
+              <div>
+                <div class="fc-text">Enrolled Successfully</div>
+                <div class="fc-sub">CS502 – Machine Learning</div>
+              </div>
+            </div>
+            <div class="floating-card card-2">
+              <div class="fc-icon blue"><i class="bi bi-graph-up-arrow"></i></div>
+              <div>
+                <div class="fc-text">GPA: 9.2</div>
+                <div class="fc-sub">Semester 4 Results</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Strip -->
+  <section class="stats-strip">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-6 col-md-3">
+          <div class="stat-item">
+            <div class="stat-number">500+</div>
+            <div class="stat-label">Active Students</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-item">
+            <div class="stat-number">40+</div>
+            <div class="stat-label">Courses Offered</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-item">
+            <div class="stat-number">15+</div>
+            <div class="stat-label">Expert Faculty</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-item">
+            <div class="stat-number">98%</div>
+            <div class="stat-label">Satisfaction Rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge"><i class="bi bi-stars"></i> Features</div>
+        <h2>Everything You Need<br>In One Platform</h2>
+        <p>A comprehensive suite of tools designed to make academic management effortless for students, faculty, and administrators.</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="feature-card blue">
+            <div class="feature-icon"><i class="bi bi-journal-bookmark-fill"></i></div>
+            <h5>Smart Course Registration</h5>
+            <p>Browse, search, and filter courses by department, semester, or credits. Enroll instantly with real-time seat availability tracking.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="feature-card purple">
+            <div class="feature-icon"><i class="bi bi-clipboard-data-fill"></i></div>
+            <h5>Result Management</h5>
+            <p>Faculty can upload internal & external marks, auto-calculate grades. Students can view semester-wise results with GPA/CGPA.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="feature-card teal">
+            <div class="feature-icon"><i class="bi bi-person-check-fill"></i></div>
+            <h5>Role-Based Access</h5>
+            <p>Three distinct portals — Student, Faculty, and Admin — each with tailored dashboards, features, and secure authentication.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="feature-card orange">
+            <div class="feature-icon"><i class="bi bi-speedometer2"></i></div>
+            <h5>Live Dashboard</h5>
+            <p>Real-time statistics, animated counters, interactive charts, and recent activity feeds to keep everyone informed at a glance.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="feature-card pink">
+            <div class="feature-icon"><i class="bi bi-file-earmark-pdf-fill"></i></div>
+            <h5>PDF Transcripts</h5>
+            <p>Students can download beautifully formatted academic transcripts as PDF documents with a single click.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="feature-card green">
+            <div class="feature-icon"><i class="bi bi-moon-stars-fill"></i></div>
+            <h5>Dark Mode</h5>
+            <p>Complete dark/light theme support throughout the entire application, with smooth transitions and persistent user preference.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it Works -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge"><i class="bi bi-rocket-takeoff"></i> Getting Started</div>
+        <h2>How EnrollX Works</h2>
+        <p>Get started in minutes with our simple four-step process. No complex setup, no hassle.</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <h5>Create Account</h5>
+            <p>Register with your name, student ID, department, and email. Quick and secure sign-up process.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <h5>Browse Courses</h5>
+            <p>Explore available courses with filters for department, semester, and credits. View seat availability in real-time.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <h5>Enroll & Learn</h5>
+            <p>One-click enrollment with automatic seat tracking. Manage your enrolled courses from your personalized dashboard.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <h5>View Results</h5>
+            <p>Check your grades, GPA, and CGPA calculated automatically. Download your academic transcript as a PDF.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to Transform Your<br>Academic Experience?</h2>
+        <p>Join hundreds of students who are already managing their courses, tracking results, and staying ahead with EnrollX.</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+          <a href="register.html" class="btn btn-white btn-enrollx btn-lg">
+            <i class="bi bi-rocket-takeoff me-2"></i>Register Now – It's Free
+          </a>
+          <a href="login.html" class="btn btn-outline-enrollx btn-enrollx btn-lg">
+            <i class="bi bi-box-arrow-in-right me-2"></i>Student Login
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="footer-brand">
+            <i class="bi bi-mortarboard-fill"></i> EnrollX
+          </div>
+          <p class="footer-desc">A premium student course registration and enrollment management portal designed for modern universities.</p>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h6>Students</h6>
+          <ul class="footer-links">
+            <li><a href="login.html">Student Login</a></li>
+            <li><a href="register.html">Register</a></li>
+            <li><a href="forgot-password.html">Reset Password</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h6>Faculty</h6>
+          <ul class="footer-links">
+            <li><a href="faculty-login.html">Faculty Login</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h6>Admin</h6>
+          <ul class="footer-links">
+            <li><a href="admin-login.html">Admin Login</a></li>
+            <li><a href="seed.html">Seed Database</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h6>Portals</h6>
+          <ul class="footer-links">
+            <li><a href="student-dashboard.html">Student Portal</a></li>
+            <li><a href="faculty-dashboard.html">Faculty Portal</a></li>
+            <li><a href="admin-dashboard.html">Admin Portal</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="mb-0">&copy; 2026 EnrollX. Built with <i class="bi bi-heart-fill" style="color:var(--danger);"></i> and Firebase</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/theme.js"></script>
+  <script>
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Navbar background on scroll
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('mainNav');
+      if (window.scrollY > 50) {
+        nav.style.boxShadow = '0 4px 30px rgba(0,0,0,0.3)';
+      } else {
+        nav.style.boxShadow = '0 4px 20px rgba(61, 90, 254, 0.3)';
+      }
+    });
+
+    // Animate stats on scroll
+    const observerOptions = { threshold: 0.5 };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.stat-number').forEach(el => {
+            const text = el.textContent;
+            const num = parseInt(text);
+            if (isNaN(num)) return;
+            const suffix = text.replace(/[0-9]/g, '');
+            let current = 0;
+            const increment = num / 60;
+            const timer = setInterval(() => {
+              current += increment;
+              if (current >= num) {
+                el.textContent = text;
+                clearInterval(timer);
+              } else {
+                el.textContent = Math.floor(current) + suffix;
+              }
+            }, 16);
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    const statsSection = document.querySelector('.stats-strip');
+    if (statsSection) observer.observe(statsSection);
+  </script>
+</body>
+</html>

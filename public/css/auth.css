@@ -1,0 +1,295 @@
+/* ========================================
+   EnrollX – Auth Pages Styles
+   ======================================== */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-hero);
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+}
+
+.auth-page::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(61, 90, 254, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 60% 80%, rgba(14, 165, 233, 0.1) 0%, transparent 50%);
+  animation: float 20s ease-in-out infinite;
+}
+
+.auth-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-2xl);
+  width: 100%;
+  max-width: 480px;
+  padding: 2.5rem;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.6s ease;
+}
+
+.auth-card .auth-logo {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-card .auth-logo h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2rem;
+  margin-bottom: 0.3rem;
+}
+
+.auth-card .auth-logo p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.auth-card .auth-logo .logo-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-lg);
+  background: var(--gradient-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin: 0 auto 1rem;
+  box-shadow: var(--shadow-colored);
+}
+
+.auth-card .form-floating {
+  margin-bottom: 1rem;
+}
+
+.auth-card .form-floating .form-control {
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem 1rem 0.5rem;
+  height: auto;
+  font-size: 0.95rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
+}
+
+.auth-card .form-floating .form-control:focus {
+  border-color: var(--primary-400);
+  box-shadow: 0 0 0 4px rgba(61, 90, 254, 0.1);
+}
+
+.auth-card .form-floating label {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.auth-card .form-select {
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.auth-card .form-select:focus {
+  border-color: var(--primary-400);
+  box-shadow: 0 0 0 4px rgba(61, 90, 254, 0.1);
+}
+
+.auth-card .auth-btn {
+  width: 100%;
+  padding: 0.85rem;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  background: var(--gradient-primary);
+  color: #fff;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-colored);
+  margin-top: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-card .auth-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.auth-card .auth-btn:hover::before {
+  left: 100%;
+}
+
+.auth-card .auth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(61, 90, 254, 0.4);
+}
+
+.auth-card .auth-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.auth-card .auth-links {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.auth-card .auth-links a {
+  color: var(--primary-500);
+  font-weight: 600;
+}
+
+.auth-card .auth-links a:hover {
+  color: var(--primary-700);
+  text-decoration: underline;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-color);
+}
+
+/* Password visibility toggle */
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  z-index: 5;
+  padding: 4px;
+}
+
+.password-toggle:hover {
+  color: var(--primary-500);
+}
+
+/* Role selector for auth pages */
+.role-selector {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.role-selector .role-btn {
+  flex: 1;
+  padding: 0.7rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.role-selector .role-btn:hover {
+  border-color: var(--primary-300);
+  color: var(--primary-500);
+}
+
+.role-selector .role-btn.active {
+  border-color: var(--primary-500);
+  background: var(--primary-50);
+  color: var(--primary-600);
+}
+
+/* Floating shapes for auth background */
+.auth-shapes {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.auth-shapes .shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.08;
+}
+
+.auth-shapes .shape-1 {
+  width: 300px;
+  height: 300px;
+  background: #3d5afe;
+  top: -100px;
+  right: -100px;
+  animation: float 8s ease-in-out infinite;
+}
+
+.auth-shapes .shape-2 {
+  width: 200px;
+  height: 200px;
+  background: #a855f7;
+  bottom: -50px;
+  left: -50px;
+  animation: float 10s ease-in-out infinite reverse;
+}
+
+.auth-shapes .shape-3 {
+  width: 150px;
+  height: 150px;
+  background: #14b8a6;
+  top: 50%;
+  left: 10%;
+  animation: float 12s ease-in-out infinite;
+}
+
+/* Register page - wider card */
+.auth-card.register-card {
+  max-width: 560px;
+}
+
+@media (max-width: 576px) {
+  .auth-card {
+    padding: 1.5rem;
+  }
+  .auth-card .auth-logo h2 {
+    font-size: 1.6rem;
+  }
+}

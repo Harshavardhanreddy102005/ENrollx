@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faculty Dashboard – EnrollX</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <nav class="sidebar" style="background: linear-gradient(180deg, #134e4a 0%, #0f766e 50%, #115e59 100%);">
+    <div class="sidebar-brand"><h4><i class="bi bi-mortarboard-fill"></i> EnrollX</h4><p>Faculty Portal</p></div>
+    <div class="nav-section">
+      <div class="nav-section-title">Main Menu</div>
+      <a href="faculty-dashboard.html" class="sidebar-link active"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="faculty-students.html" class="sidebar-link"><i class="bi bi-people"></i> Students</a>
+      <a href="faculty-results.html" class="sidebar-link"><i class="bi bi-clipboard-data"></i> Manage Results</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Account</div>
+      <a href="faculty-profile.html" class="sidebar-link"><i class="bi bi-person-circle"></i> Profile</a>
+      <a href="#" class="sidebar-link" onclick="logout()"><i class="bi bi-box-arrow-left"></i> Logout</a>
+    </div>
+    <div class="nav-section" style="padding:0 1.5rem;"><button class="theme-toggle-sidebar"><i class="bi bi-moon-fill"></i></button></div>
+    <div class="sidebar-footer"><div class="user-info"><div class="user-avatar faculty-avatar-text">F</div><div><div class="user-name faculty-name">Faculty</div><div class="user-role faculty-dept">Department</div></div></div></div>
+  </nav>
+  <div class="sidebar-overlay"></div>
+  <button class="sidebar-toggle"><i class="bi bi-list"></i></button>
+
+  <div class="main-content">
+    <div class="dashboard-header">
+      <div class="welcome-text">
+        <h2>Welcome, <span class="faculty-name" style="background:var(--gradient-teal);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Faculty</span>! 👋</h2>
+        <p>Manage your courses, students, and results</p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card teal animate-fade-in-up animate-delay-1">
+        <div class="stat-icon"><i class="bi bi-journal-bookmark"></i></div>
+        <div class="stat-number" id="facultyCoursesCount">0</div>
+        <div class="stat-label">Assigned Courses</div>
+      </div>
+      <div class="stat-card blue animate-fade-in-up animate-delay-2">
+        <div class="stat-icon"><i class="bi bi-people"></i></div>
+        <div class="stat-number" id="facultyStudentsCount">0</div>
+        <div class="stat-label">Total Students</div>
+      </div>
+      <div class="stat-card purple animate-fade-in-up animate-delay-3">
+        <div class="stat-icon"><i class="bi bi-clipboard-check"></i></div>
+        <div class="stat-number" id="facultyResultsCount">0</div>
+        <div class="stat-label">Results Uploaded</div>
+      </div>
+    </div>
+
+    <!-- Assigned Courses -->
+    <h5 class="fw-bold mb-3 mt-4"><i class="bi bi-journal-bookmark-fill me-2" style="color:var(--teal-500);"></i>My Assigned Courses</h5>
+    <div class="row g-4" id="assignedCoursesList">
+      <div class="col-12 text-center p-4"><div class="spinner-border text-primary"></div></div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row mt-4 g-4">
+      <div class="col-lg-6">
+        <div class="activity-feed">
+          <div class="activity-header"><h5><i class="bi bi-clock-history me-2"></i>Recent Activity</h5></div>
+          <div id="facultyActivity"><div class="text-center p-3 text-muted">Loading...</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/faculty.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', initFacultyDashboard);</script>
+</body>
+</html>

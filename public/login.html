@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login – EnrollX</title>
+  <meta name="description" content="Log in to your EnrollX student account to manage course enrollments and view results.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="logo-icon"><i class="bi bi-mortarboard-fill"></i></div>
+        <h2 class="text-gradient">EnrollX</h2>
+        <p>Sign in to your student account</p>
+      </div>
+      <form id="loginForm" onsubmit="loginStudent(event)">
+        <div class="form-floating">
+          <input type="email" class="form-control" id="loginEmail" placeholder="Email" required>
+          <label><i class="bi bi-envelope me-2"></i>Email Address</label>
+        </div>
+        <div class="form-floating position-relative">
+          <input type="password" class="form-control" id="loginPassword" placeholder="Password" required>
+          <label><i class="bi bi-lock me-2"></i>Password</label>
+          <button type="button" class="password-toggle" onclick="togglePasswordVisibility('loginPassword', this)">
+            <i class="bi bi-eye"></i>
+          </button>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="rememberMe">
+            <label class="form-check-label" for="rememberMe" style="font-size:0.85rem;">Remember me</label>
+          </div>
+          <a href="forgot-password.html" style="font-size:0.85rem;">Forgot Password?</a>
+        </div>
+        <button type="submit" class="auth-btn">
+          <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+        </button>
+      </form>
+      <div class="auth-links">
+        Don't have an account? <a href="register.html">Create Account</a>
+      </div>
+      <div class="auth-divider">or login as</div>
+      <div class="d-flex gap-2">
+        <a href="faculty-login.html" class="btn btn-outline-primary flex-fill rounded-pill" style="font-size:0.85rem;">
+          <i class="bi bi-person-workspace me-1"></i>Faculty
+        </a>
+        <a href="admin-login.html" class="btn btn-outline-danger flex-fill rounded-pill" style="font-size:0.85rem;">
+          <i class="bi bi-shield-lock me-1"></i>Admin
+        </a>
+      </div>
+      <div class="text-center mt-3">
+        <a href="index.html" style="font-size:0.85rem;color:var(--text-muted);"><i class="bi bi-arrow-left me-1"></i>Back to Home</a>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

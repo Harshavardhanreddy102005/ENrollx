@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EnrollX – Seed Data</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <style>
+    .seed-log { max-height: 400px; overflow-y: auto; background: #1e293b; color: #10b981; padding: 1.5rem; border-radius: 12px; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.8; }
+    .seed-log .error { color: #ef4444; }
+    .seed-log .info { color: #3b82f6; }
+    .seed-log .success { color: #10b981; }
+    .seed-log .warn { color: #f59e0b; }
+  </style>
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card" style="max-width:700px;">
+      <div class="auth-logo">
+        <div class="logo-icon" style="background:var(--gradient-card-green);"><i class="bi bi-database-fill-gear"></i></div>
+        <h2 class="text-gradient">Seed Database</h2>
+        <p>Populate Firestore with sample data for testing</p>
+      </div>
+
+      <div class="alert alert-warning d-flex align-items-center gap-2 mb-3" style="border-radius:12px;border:none;font-size:0.85rem;">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span><strong>Important:</strong> This will create an admin account, faculty accounts, and sample courses. Run this <strong>only once</strong> on a fresh database.</span>
+      </div>
+
+      <div class="mb-3">
+        <h6 class="fw-bold"><i class="bi bi-list-check me-2"></i>What will be created:</h6>
+        <ul style="font-size:0.9rem;color:var(--text-secondary);">
+          <li><strong>1 Admin Account:</strong> admin@enrollx.com / Admin@123</li>
+          <li><strong>3 Faculty Accounts:</strong> with email/password</li>
+          <li><strong>12 Courses:</strong> across multiple departments</li>
+        </ul>
+      </div>
+
+      <button id="seedBtn" class="auth-btn" style="background:var(--gradient-card-green);" onclick="runSeed()">
+        <i class="bi bi-play-circle me-2"></i>Run Seed Script
+      </button>
+
+      <div id="seedLogContainer" class="mt-4" style="display:none;">
+        <h6 class="fw-bold mb-2"><i class="bi bi-terminal me-2"></i>Seed Log:</h6>
+        <div class="seed-log" id="seedLog"></div>
+      </div>
+
+      <div class="text-center mt-3">
+        <a href="index.html" style="font-size:0.85rem;color:var(--text-muted);"><i class="bi bi-arrow-left me-1"></i>Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script>
+    const logEl = document.getElementById('seedLog');
+    const logContainer = document.getElementById('seedLogContainer');
+
+    function log(msg, type = 'success') {
+      logContainer.style.display = 'block';
+      logEl.innerHTML += `<div class="${type}">[${new Date().toLocaleTimeString()}] ${msg}</div>`;
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    async function runSeed() {
+      const btn = document.getElementById('seedBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Seeding...';
+
+      try {
+        // ===== 1. CREATE ADMIN ACCOUNT =====
+        log('Creating admin account...', 'info');
+        let adminUser;
+        try {
+          const adminCred = await auth.createUserWithEmailAndPassword('admin@enrollx.com', 'Admin@123');
+          adminUser = adminCred.user;
+          await adminUser.updateProfile({ displayName: 'System Administrator' });
+          await db.collection('admins').doc(adminUser.uid).set({
+            uid: adminUser.uid,
+            name: 'System Administrator',
+            email: 'admin@enrollx.com',
+            role: 'admin',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          log('✅ Admin created: admin@enrollx.com / Admin@123', 'success');
+        } catch (e) {
+          if (e.code === 'auth/email-already-in-use') {
+            log('⚠️ Admin account already exists, skipping...', 'warn');
+            await auth.signInWithEmailAndPassword('admin@enrollx.com', 'Admin@123');
+          } else throw e;
+        }
+
+        // Sign out to create faculty accounts
+        await auth.signOut();
+
+        // ===== 2. CREATE FACULTY ACCOUNTS =====
+        const facultyData = [
+          { name: 'Dr. Sarah Johnson', email: 'sarah.johnson@enrollx.com', password: 'Faculty@123', department: 'Computer Science', designation: 'Professor', phone: '555-0101' },
+          { name: 'Dr. Michael Chen', email: 'michael.chen@enrollx.com', password: 'Faculty@123', department: 'Mathematics', designation: 'Associate Professor', phone: '555-0102' },
+          { name: 'Dr. Emily Davis', email: 'emily.davis@enrollx.com', password: 'Faculty@123', department: 'Electronics', designation: 'Assistant Professor', phone: '555-0103' }
+        ];
+
+        const facultyIds = {};
+        for (const f of facultyData) {
+          log(`Creating faculty: ${f.name}...`, 'info');
+          try {
+            const cred = await auth.createUserWithEmailAndPassword(f.email, f.password);
+            await cred.user.updateProfile({ displayName: f.name });
+            facultyIds[f.department] = cred.user.uid;
+            await db.collection('faculty').doc(cred.user.uid).set({
+              uid: cred.user.uid,
+              name: f.name,
+              email: f.email,
+              department: f.department,
+              designation: f.designation,
+              phone: f.phone,
+              role: 'faculty',
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            log(`✅ Faculty created: ${f.email} / ${f.password}`, 'success');
+            await auth.signOut();
+          } catch (e) {
+            if (e.code === 'auth/email-already-in-use') {
+              log(`⚠️ ${f.email} already exists, skipping...`, 'warn');
+              // Try to get the existing faculty ID
+              try {
+                const cred = await auth.signInWithEmailAndPassword(f.email, f.password);
+                facultyIds[f.department] = cred.user.uid;
+                await auth.signOut();
+              } catch(e2) { /* ignore */ }
+            } else {
+              log(`❌ Error creating ${f.name}: ${e.message}`, 'error');
+            }
+          }
+        }
+
+        // ===== 3. CREATE COURSES =====
+        log('Creating sample courses...', 'info');
+        const courses = [
+          { courseName: 'Data Structures & Algorithms', courseCode: 'CS301', credits: 4, department: 'Computer Science', semester: 3, totalSeats: 60, description: 'Study of fundamental data structures like arrays, linked lists, trees, graphs, and key algorithms for sorting, searching, and optimization.' },
+          { courseName: 'Database Management Systems', courseCode: 'CS401', credits: 4, department: 'Computer Science', semester: 4, totalSeats: 55, description: 'Introduction to relational databases, SQL, normalization, transaction processing, and NoSQL databases.' },
+          { courseName: 'Machine Learning', courseCode: 'CS502', credits: 3, department: 'Computer Science', semester: 5, totalSeats: 45, description: 'Supervised and unsupervised learning, neural networks, decision trees, SVM, and practical ML applications.' },
+          { courseName: 'Web Development', courseCode: 'CS303', credits: 3, department: 'Computer Science', semester: 3, totalSeats: 50, description: 'Full-stack web development covering HTML, CSS, JavaScript, React, Node.js, and database integration.' },
+          { courseName: 'Operating Systems', courseCode: 'CS402', credits: 4, department: 'Computer Science', semester: 4, totalSeats: 55, description: 'Process management, memory management, file systems, scheduling algorithms, and concurrent programming.' },
+          { courseName: 'Computer Networks', courseCode: 'CS501', credits: 3, department: 'Computer Science', semester: 5, totalSeats: 50, description: 'OSI model, TCP/IP, routing protocols, network security, and wireless networking fundamentals.' },
+          { courseName: 'Calculus & Linear Algebra', courseCode: 'MA201', credits: 4, department: 'Mathematics', semester: 2, totalSeats: 80, description: 'Differential and integral calculus, matrices, vector spaces, eigenvalues, and applications in engineering.' },
+          { courseName: 'Probability & Statistics', courseCode: 'MA301', credits: 3, department: 'Mathematics', semester: 3, totalSeats: 70, description: 'Probability theory, random variables, distributions, hypothesis testing, and statistical inference.' },
+          { courseName: 'Discrete Mathematics', courseCode: 'MA202', credits: 3, department: 'Mathematics', semester: 2, totalSeats: 65, description: 'Set theory, combinatorics, graph theory, boolean algebra, and mathematical logic for CS students.' },
+          { courseName: 'Digital Electronics', courseCode: 'EC301', credits: 4, department: 'Electronics', semester: 3, totalSeats: 50, description: 'Digital logic gates, combinational circuits, sequential circuits, counters, registers, and memory systems.' },
+          { courseName: 'Signal Processing', courseCode: 'EC401', credits: 3, department: 'Electronics', semester: 4, totalSeats: 45, description: 'Continuous and discrete time signals, Fourier analysis, filtering, sampling theorem, and DSP applications.' },
+          { courseName: 'Embedded Systems', courseCode: 'EC502', credits: 3, department: 'Electronics', semester: 5, totalSeats: 40, description: 'Microcontroller programming, real-time operating systems, IoT devices, and embedded system design.' }
+        ];
+
+        for (const course of courses) {
+          try {
+            const deptFacultyId = facultyIds[course.department] || '';
+            const deptFacultyName = facultyData.find(f => f.department === course.department)?.name || 'Unassigned';
+            
+            await db.collection('courses').add({
+              ...course,
+              availableSeats: course.totalSeats,
+              facultyId: deptFacultyId,
+              facultyName: deptFacultyId ? deptFacultyName : 'Unassigned',
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            log(`✅ Course: ${course.courseCode} - ${course.courseName}`, 'success');
+          } catch (e) {
+            log(`❌ Error creating ${course.courseCode}: ${e.message}`, 'error');
+          }
+        }
+
+        log('', 'info');
+        log('🎉 ============================================', 'success');
+        log('🎉 SEED COMPLETE! Database populated successfully', 'success');
+        log('🎉 ============================================', 'success');
+        log('', 'info');
+        log('📋 Login Credentials:', 'info');
+        log('   Admin:   admin@enrollx.com / Admin@123', 'info');
+        log('   Faculty: sarah.johnson@enrollx.com / Faculty@123', 'info');
+        log('   Faculty: michael.chen@enrollx.com / Faculty@123', 'info');
+        log('   Faculty: emily.davis@enrollx.com / Faculty@123', 'info');
+        log('', 'info');
+        log('👉 Register as a student at: register.html', 'info');
+
+        btn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Seeding Complete!';
+        btn.style.background = 'var(--success)';
+
+      } catch (error) {
+        log(`❌ Fatal error: ${error.message}`, 'error');
+        console.error(error);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-arrow-clockwise me-2"></i>Retry';
+      }
+    }
+  </script>
+</body>
+</html>

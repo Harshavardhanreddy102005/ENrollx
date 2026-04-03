@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Results – EnrollX</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <nav class="sidebar">
+    <div class="sidebar-brand"><h4><i class="bi bi-mortarboard-fill"></i> EnrollX</h4><p>Student Portal</p></div>
+    <div class="nav-section">
+      <div class="nav-section-title">Main Menu</div>
+      <a href="student-dashboard.html" class="sidebar-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="student-courses.html" class="sidebar-link"><i class="bi bi-journal-bookmark"></i> Browse Courses</a>
+      <a href="student-enrolled.html" class="sidebar-link"><i class="bi bi-bookmark-check"></i> My Courses</a>
+      <a href="student-results.html" class="sidebar-link active"><i class="bi bi-graph-up"></i> Results</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Account</div>
+      <a href="student-profile.html" class="sidebar-link"><i class="bi bi-person-circle"></i> Profile</a>
+      <a href="#" class="sidebar-link" onclick="logout()"><i class="bi bi-box-arrow-left"></i> Logout</a>
+    </div>
+    <div class="nav-section" style="padding:0 1.5rem;"><button class="theme-toggle-sidebar" title="Toggle theme"><i class="bi bi-moon-fill"></i></button></div>
+    <div class="sidebar-footer"><div class="user-info"><div class="user-avatar student-avatar-text">S</div><div><div class="user-name student-name">Student</div><div class="user-role student-dept">Department</div></div></div></div>
+  </nav>
+  <div class="sidebar-overlay"></div>
+  <button class="sidebar-toggle"><i class="bi bi-list"></i></button>
+
+  <div class="main-content">
+    <div class="dashboard-header">
+      <div class="welcome-text">
+        <h2><i class="bi bi-graph-up-arrow me-2 text-gradient"></i>My Results</h2>
+        <p>View your semester-wise results and CGPA</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-primary-gradient btn-enrollx" onclick="downloadResultPDF()">
+          <i class="bi bi-download me-2"></i>Download PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- CGPA Display -->
+    <div id="cgpaSection" class="row g-4 mb-4">
+      <div class="col-md-4">
+        <div class="cgpa-display">
+          <div class="cgpa-label">Cumulative GPA</div>
+          <div class="cgpa-value" id="cgpaValue">-</div>
+          <span id="cgpaBadge" class="gpa-badge" style="background:rgba(255,255,255,0.2);color:#fff;margin-top:0.5rem;display:inline-block;">Calculating...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Container -->
+    <div id="resultsContainer">
+      <div class="text-center p-5"><div class="spinner-border text-primary"></div><p class="mt-2 text-muted">Loading results...</p></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/student.js"></script>
+  <script src="js/results.js"></script>
+  <script>document.addEventListener('DOMContentLoaded', initStudentResults);</script>
+</body>
+</html>
