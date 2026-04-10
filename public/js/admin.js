@@ -447,7 +447,7 @@ async function loadAdminStudentsList() {
     const snapshot = await getAdminQuery('students').get();
 
     if (snapshot.empty) {
-      container.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No students found</td></tr>';
+      container.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-muted">No students found</td></tr>';
       return;
     }
 
@@ -463,6 +463,14 @@ async function loadAdminStudentsList() {
           <td>${EnrollX.escapeHtml(s.department)}</td>
           <td>Sem ${s.semester}</td>
           <td><span class="badge-enrollx badge-green">Active</span></td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary rounded-circle" onclick="editStudent('${doc.id}')" title="Edit Student">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger rounded-circle ms-1" onclick="deleteStudent('${doc.id}', '${EnrollX.escapeHtml(s.name).replace(/'/g, "\\'")}')" title="Delete Student">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
         </tr>`;
     });
     container.innerHTML = html;
@@ -482,6 +490,90 @@ function searchStudents() {
     const text = row.textContent.toLowerCase();
     row.style.display = text.includes(term) ? '' : 'none';
   });
+}
+
+async function editStudent(docId) {
+  try {
+    const doc = await db.collection('students').doc(docId).get();
+    if (!doc.exists) return;
+
+    const s = doc.data();
+    document.getElementById('editStudentDocId').value = docId;
+    document.getElementById('editStudentName').value = s.name;
+    document.getElementById('editStudentRegId').value = s.studentId;
+    document.getElementById('editStudentEmail').value = s.email;
+    document.getElementById('editStudentDept').value = s.department;
+    document.getElementById('editStudentSem').value = s.semester;
+    document.getElementById('editStudentPhone').value = s.phone || '';
+
+    const modal = new bootstrap.Modal(document.getElementById('editStudentModal'));
+    modal.show();
+  } catch (error) {
+    console.error('Edit student error:', error);
+    EnrollX.toast('Failed to load student details', 'error');
+  }
+}
+
+async function saveStudentEdit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type="submit"]');
+  const originalText = btn.innerHTML;
+
+  try {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+
+    const docId = document.getElementById('editStudentDocId').value;
+    const name = document.getElementById('editStudentName').value.trim();
+    const department = document.getElementById('editStudentDept').value;
+    const semester = parseInt(document.getElementById('editStudentSem').value);
+    const phone = document.getElementById('editStudentPhone').value.trim();
+
+    if (!name || !department || !semester) throw new Error('Name, Department, and Semester are required.');
+
+    await db.collection('students').doc(docId).update({
+      name,
+      department,
+      semester,
+      phone
+    });
+
+    EnrollX.toast('Student details updated successfully!', 'success');
+
+    const modal = bootstrap.Modal.getInstance(document.getElementById('editStudentModal'));
+    if (modal) modal.hide();
+    await loadAdminStudentsList();
+
+  } catch (error) {
+    console.error('Save student edit error:', error);
+    EnrollX.toast(error.message || 'Failed to update student', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+  }
+}
+
+async function deleteStudent(docId, studentName) {
+  const confirmed = await EnrollX.confirm(`Are you sure you want to completely delete "${studentName}"? This action cannot be undone and will delete their enrollments.`);
+  if (!confirmed) return;
+
+  try {
+    // Delete all related enrollments
+    const enrollments = await db.collection('enrollments').where('studentId', '==', docId).get();
+    const batch = db.batch();
+    enrollments.docs.forEach(doc => batch.delete(doc.ref));
+    
+    // Delete the student profile
+    batch.delete(db.collection('students').doc(docId));
+    
+    await batch.commit();
+
+    EnrollX.toast('Student and their enrollments deleted.', 'success');
+    await loadAdminStudentsList();
+  } catch (error) {
+    console.error('Delete student error:', error);
+    EnrollX.toast('Failed to delete student', 'error');
+  }
 }
 
 // ---------- Admin Faculty Management ----------
@@ -695,9 +787,14 @@ async function loadAdminList() {
 
   try {
     const snapshot = await db.collection('admins').get();
+    const isSuperAdmin = currentAdmin && currentAdmin.adminType === 'super';
+
+    // Hide actions column header if not super admin
+    const actionsHeader = document.getElementById('actionsColHeader');
+    if (actionsHeader) actionsHeader.style.display = isSuperAdmin ? '' : 'none';
 
     if (snapshot.empty) {
-      container.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">No administrators found</td></tr>';
+      container.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">No administrators found</td></tr>';
       return;
     }
 
@@ -712,14 +809,23 @@ async function loadAdminList() {
       }[a.adminType || 'super'];
 
       const deptName = a.adminType === 'department' ? (a.adminDepartment || 'N/A') : 'All';
+      const isSelf = a.uid === currentAdmin?.uid;
 
       html += `
         <tr>
           <td>${index + 1}</td>
-          <td><strong>${EnrollX.escapeHtml(a.name || 'Admin')}</strong></td>
+          <td><strong>${EnrollX.escapeHtml(a.name || 'Admin')}</strong>${isSelf ? ' <span class="badge-enrollx badge-blue" style="font-size:0.7rem;">You</span>' : ''}</td>
           <td>${EnrollX.escapeHtml(a.email)}</td>
           <td><span class="badge-enrollx badge-red">${roleDisplayName}</span></td>
           <td>${EnrollX.escapeHtml(deptName)}</td>
+          <td style="display:${isSuperAdmin ? '' : 'none'}">
+            <button class="btn btn-sm btn-outline-primary rounded-circle" onclick="editAdmin('${doc.id}')" title="Edit Admin">
+              <i class="bi bi-pencil"></i>
+            </button>
+            ${!isSelf ? `<button class="btn btn-sm btn-outline-danger rounded-circle ms-1" onclick="deleteAdmin('${doc.id}', '${EnrollX.escapeHtml(a.name || 'Admin').replace(/'/g, "\\'")}'" title="Delete Admin">
+              <i class="bi bi-trash"></i>
+            </button>` : ''}
+          </td>
         </tr>`;
     });
     container.innerHTML = html;
@@ -784,5 +890,90 @@ async function addAdminMember(e) {
     EnrollX.toast(message, 'error');
     btn.disabled = false;
     btn.innerHTML = originalText;
+  }
+}
+
+// ---------- Edit Admin ----------
+async function editAdmin(docId) {
+  try {
+    const doc = await db.collection('admins').doc(docId).get();
+    if (!doc.exists) return;
+    const a = doc.data();
+
+    document.getElementById('editAdminDocId').value = docId;
+    document.getElementById('editAdminName').value = a.name || '';
+    document.getElementById('editAdminEmail').value = a.email || '';
+    document.getElementById('editAdminType').value = a.adminType || 'super';
+
+    const deptContainer = document.getElementById('editAdminDeptContainer');
+    if (a.adminType === 'department') {
+      deptContainer.style.display = 'block';
+      document.getElementById('editAdminDept').value = a.adminDepartment || '';
+    } else {
+      deptContainer.style.display = 'none';
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById('editAdminModal'));
+    modal.show();
+  } catch (error) {
+    console.error('Edit admin error:', error);
+    EnrollX.toast('Failed to load admin details', 'error');
+  }
+}
+
+async function saveAdminEdit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type="submit"]');
+  const originalText = btn.innerHTML;
+
+  try {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+
+    const docId = document.getElementById('editAdminDocId').value;
+    const name = document.getElementById('editAdminName').value.trim();
+    const adminType = document.getElementById('editAdminType').value;
+    const adminDepartment = adminType === 'department'
+      ? document.getElementById('editAdminDept').value
+      : null;
+
+    if (!name) throw new Error('Name is required.');
+    if (adminType === 'department' && !adminDepartment) throw new Error('Please select a department.');
+
+    await db.collection('admins').doc(docId).update({
+      name,
+      adminType,
+      adminDepartment: adminDepartment || null
+    });
+
+    EnrollX.toast('Administrator updated successfully!', 'success');
+    const modal = bootstrap.Modal.getInstance(document.getElementById('editAdminModal'));
+    if (modal) modal.hide();
+    await loadAdminList();
+
+  } catch (error) {
+    console.error('Save admin edit error:', error);
+    EnrollX.toast(error.message || 'Failed to update admin', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+  }
+}
+
+async function deleteAdmin(docId, adminName) {
+  if (docId === currentAdmin?.uid) {
+    EnrollX.toast('You cannot delete your own account.', 'warning');
+    return;
+  }
+  const confirmed = await EnrollX.confirm(`Are you sure you want to delete administrator "${adminName}"? This action cannot be undone.`);
+  if (!confirmed) return;
+
+  try {
+    await db.collection('admins').doc(docId).delete();
+    EnrollX.toast('Administrator deleted.', 'success');
+    await loadAdminList();
+  } catch (error) {
+    console.error('Delete admin error:', error);
+    EnrollX.toast('Failed to delete administrator', 'error');
   }
 }

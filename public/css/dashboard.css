@@ -194,10 +194,21 @@
   display: block;
 }
 
-.quick-link-card.blue i { color: var(--primary-500); }
-.quick-link-card.purple i { color: var(--purple-500); }
-.quick-link-card.teal i { color: var(--teal-500); }
-.quick-link-card.orange i { color: var(--warning); }
+.quick-link-card.blue i {
+  color: var(--primary-500);
+}
+
+.quick-link-card.purple i {
+  color: var(--purple-500);
+}
+
+.quick-link-card.teal i {
+  color: var(--teal-500);
+}
+
+.quick-link-card.orange i {
+  color: var(--warning);
+}
 
 .quick-link-card h6 {
   font-weight: 600;
@@ -371,10 +382,25 @@
   font-size: 0.95rem;
 }
 
-.gpa-badge.excellent { background: var(--success-light); color: var(--success); }
-.gpa-badge.good { background: var(--info-light); color: var(--info); }
-.gpa-badge.average { background: var(--warning-light); color: var(--warning); }
-.gpa-badge.poor { background: var(--danger-light); color: var(--danger); }
+.gpa-badge.excellent {
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.gpa-badge.good {
+  background: var(--info-light);
+  color: var(--info);
+}
+
+.gpa-badge.average {
+  background: var(--warning-light);
+  color: var(--warning);
+}
+
+.gpa-badge.poor {
+  background: var(--danger-light);
+  color: var(--danger);
+}
 
 /* Grade badges */
 .grade-badge {
@@ -388,13 +414,40 @@
   font-size: 0.85rem;
 }
 
-.grade-O { background: #d1fae5; color: #059669; }
-.grade-Aplus { background: #dbeafe; color: #2563eb; }
-.grade-A { background: #e0e7ff; color: #4f46e5; }
-.grade-Bplus { background: #f3e8ff; color: #7c3aed; }
-.grade-B { background: #fef3c7; color: #d97706; }
-.grade-C { background: #ffedd5; color: #ea580c; }
-.grade-F { background: #fee2e2; color: #dc2626; }
+.grade-O {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.grade-Aplus {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.grade-A {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+
+.grade-Bplus {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.grade-B {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.grade-C {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+.grade-F {
+  background: #fee2e2;
+  color: #dc2626;
+}
 
 /* CGPA Display */
 .cgpa-display {
@@ -427,12 +480,15 @@
     flex-direction: column;
     align-items: flex-start;
   }
+
   .stats-grid {
     grid-template-columns: 1fr 1fr;
   }
+
   .quick-links {
     grid-template-columns: 1fr 1fr;
   }
+
   .cgpa-display .cgpa-value {
     font-size: 2.5rem;
   }

@@ -221,24 +221,35 @@ async function loadAllFacultyStudents() {
       .where('facultyId', '==', currentFaculty.uid)
       .get();
 
+    if (courses.empty) {
+      container.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-4">No courses assigned. Contact admin to assign courses.</td></tr>';
+      return;
+    }
+
     // Load course selector
     const selector = document.getElementById('courseSelector');
     if (selector) {
+      selector.innerHTML = '<option value="">Select Course</option>';
       courses.docs.forEach(doc => {
         const course = doc.data();
         selector.innerHTML += `<option value="${doc.id}">${course.courseName} (${course.courseCode})</option>`;
       });
-    }
 
-    if (courses.empty) {
-      container.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-4">No courses assigned</td></tr>';
-      return;
-    }
+      // Wire change event to reload students
+      selector.onchange = async function() {
+        if (this.value) {
+          await loadCourseStudents(this.value);
+          if (selector) selector.value = this.value;
+        } else {
+          container.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-4">Select a course to view students</td></tr>';
+        }
+      };
 
-    // Load first course's students by default
-    if (courses.docs.length > 0) {
+      // Auto-select and load first course
+      selector.value = courses.docs[0].id;
       await loadCourseStudents(courses.docs[0].id);
     }
+
   } catch (error) {
     console.error('Load all students error:', error);
   }
@@ -262,6 +273,7 @@ async function initFacultyResults() {
 
     const selector = document.getElementById('resultCourseSelector');
     if (selector) {
+      selector.innerHTML = '<option value="">Select Course</option>';
       courses.docs.forEach(doc => {
         const course = doc.data();
         const selected = courseId === doc.id ? 'selected' : '';
@@ -271,6 +283,11 @@ async function initFacultyResults() {
 
     if (courseId) {
       await loadCourseForResults(courseId);
+    } else if (!courses.empty) {
+      // Auto-load first assigned course
+      const firstCourseId = courses.docs[0].id;
+      if (selector) selector.value = firstCourseId;
+      await loadCourseForResults(firstCourseId);
     }
   } catch (error) {
     console.error('Faculty results error:', error);

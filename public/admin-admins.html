@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
-  <nav class="sidebar" style="background: linear-gradient(180deg, #1e1b4b 0%, #312e81 40%, #4c1d95 100%);">
+  <nav class="sidebar" style="background: linear-gradient(180deg, #005f73 0%, #0a9396 50%, #00bcd4 100%);">
     <div class="sidebar-brand"><h4><i class="bi bi-shield-lock-fill"></i> EnrollX</h4><p>Admin Panel</p></div>
     <div class="nav-section">
       <div class="nav-section-title">Main Menu</div>
@@ -55,6 +55,7 @@
                 <th>Email</th>
                 <th>Status</th>
                 <th>Department</th>
+                <th id="actionsColHeader">Actions</th>
               </tr>
             </thead>
             <tbody id="adminAdminsBody">
@@ -119,6 +120,60 @@
             <div class="text-end mt-4">
               <button type="button" class="btn btn-secondary rounded-pill me-2" data-bs-dismiss="modal">Cancel</button>
               <button type="submit" class="btn btn-red-gradient btn-enrollx"><i class="bi bi-check-lg me-2"></i>Create Admin</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Admin Modal -->
+  <div class="modal fade" id="editAdminModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content modal-enrollx">
+        <div class="modal-header" style="background:var(--gradient-primary);">
+          <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Edit Administrator</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editAdminForm" onsubmit="saveAdminEdit(event)" class="form-enrollx">
+            <input type="hidden" id="editAdminDocId">
+            <div class="mb-3">
+              <label class="form-label">Full Name *</label>
+              <input type="text" class="form-control" id="editAdminName" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email (Cannot be changed)</label>
+              <input type="email" class="form-control" id="editAdminEmail" disabled>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Admin Role *</label>
+              <select class="form-select" id="editAdminType" required
+                onchange="document.getElementById('editAdminDeptContainer').style.display = this.value === 'department' ? 'block' : 'none'">
+                <option value="super">Super Admin (Full Access)</option>
+                <option value="department">Department Admin</option>
+                <option value="placement">Placement Admin</option>
+                <option value="exam">Exam Admin</option>
+              </select>
+            </div>
+            <div class="mb-3" id="editAdminDeptContainer" style="display:none;">
+              <label class="form-label">Department</label>
+              <select class="form-select" id="editAdminDept">
+                <option value="">Select Department</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Information Technology">Information Technology</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Electrical Engineering">Electrical Engineering</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                <option value="Civil Engineering">Civil Engineering</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Physics">Physics</option>
+                <option value="Business Administration">Business Administration</option>
+              </select>
+            </div>
+            <div class="text-end mt-4">
+              <button type="button" class="btn btn-secondary rounded-pill me-2" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary-gradient btn-enrollx"><i class="bi bi-check-lg me-2"></i>Save Changes</button>
             </div>
           </form>
         </div>

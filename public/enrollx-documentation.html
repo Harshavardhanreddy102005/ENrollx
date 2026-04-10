@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EnrollX – System Documentation</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #1a1a2e;
+      background: #fff;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    /* ── Print Setup ── */
+    @page {
+      size: A4;
+      margin: 15mm 18mm;
+    }
+
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      section {
+        page-break-inside: avoid;
+      }
+
+      body {
+        font-size: 12px;
+      }
+    }
+
+    /* ── Print Button ── */
+    .print-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #00bcd4, #00e5ff);
+      color: #003344;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 188, 212, 0.4);
+      z-index: 999;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .print-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* ── Cover Page ── */
+    .cover {
+      background: linear-gradient(135deg, #005f73 0%, #0a9396 40%, #00bcd4 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px 40px;
+      position: relative;
+    }
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
+    }
+
+    .cover-logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 64px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .cover-logo span {
+      opacity: 0.7;
+    }
+
+    .cover-subtitle {
+      font-size: 20px;
+      font-weight: 300;
+      opacity: 0.85;
+      margin-bottom: 40px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    .cover-divider {
+      width: 80px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.5);
+      margin: 0 auto 40px;
+      border-radius: 2px;
+      position: relative;
+    }
+
+    .cover-desc {
+      font-size: 16px;
+      opacity: 0.9;
+      max-width: 520px;
+      margin: 0 auto 50px;
+      line-height: 1.7;
+      position: relative;
+    }
+
+    .cover-badges {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .cover-badge {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 8px 20px;
+      border-radius: 25px;
+      font-size: 13px;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+    }
+
+    .cover-footer {
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    .cover-version {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    /* ── Content Wrapper ── */
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* ── TOC ── */
+    .toc {
+      background: #f0fdff;
+      border: 1px solid #b3f0ff;
+      border-radius: 12px;
+      padding: 30px 35px;
+      margin-bottom: 40px;
+    }
+
+    .toc h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      color: #005f73;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toc ol {
+      padding-left: 20px;
+    }
+
+    .toc li {
+      padding: 4px 0;
+      color: #0a9396;
+      font-weight: 500;
+    }
+
+    .toc li span {
+      color: #64748b;
+      font-weight: 400;
+      font-size: 12px;
+      margin-left: 6px;
+    }
+
+    /* ── Section Headers ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #e0f9ff;
+    }
+
+    .section-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #005f73, #00bcd4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .section-title h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      color: #003344;
+      line-height: 1.2;
+    }
+
+    .section-title p {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    section {
+      margin-bottom: 50px;
+    }
+
+    /* ── Intro Cards ── */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .intro-card {
+      background: linear-gradient(135deg, #f0fdff, #e0f9ff);
+      border: 1px solid #b3f0ff;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .intro-card .ic-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: #00bcd4;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .intro-card .ic-label {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    /* ── Portal Cards ── */
+    .portal-card {
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      border-left: 5px solid;
+    }
+
+    .portal-card.student {
+      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+      border-color: #16a34a;
+    }
+
+    .portal-card.faculty {
+      background: linear-gradient(135deg, #f0fdff, #cffafe);
+      border-color: #0891b2;
+    }
+
+    .portal-card.admin {
+      background: linear-gradient(135deg, #fdf4ff, #fae8ff);
+      border-color: #9333ea;
+    }
+
+    .portal-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 17px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .portal-card .url-badge {
+      display: inline-block;
+      background: rgba(0, 0, 0, 0.07);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-family: monospace;
+      margin-bottom: 12px;
+      color: #334155;
+    }
+
+    .portal-card p {
+      color: #475569;
+      margin-bottom: 10px;
+    }
+
+    /* ── Feature List ── */
+    .feature-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      color: #334155;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .feature-list li::before {
+      content: '✓';
+      color: #00bcd4;
+      font-weight: 700;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    /* ── Flow Steps ── */
+    .flow-steps {
+      counter-reset: step;
+      padding: 0;
+      list-style: none;
+    }
+
+    .flow-step {
+      counter-increment: step;
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      align-items: flex-start;
+    }
+
+    .flow-step::before {
+      content: counter(step);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #005f73, #00bcd4);
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .flow-step-body h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin-bottom: 3px;
+    }
+
+    .flow-step-body p {
+      font-size: 12.5px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    /* ── Role Table ── */
+    .role-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      margin-bottom: 20px;
+    }
+
+    .role-table thead {
+      background: linear-gradient(135deg, #005f73, #0a9396);
+      color: white;
+    }
+
+    .role-table thead th {
+      padding: 12px 16px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-align: left;
+      letter-spacing: 0.3px;
+    }
+
+    .role-table tbody tr:nth-child(even) {
+      background: #f0fdff;
+    }
+
+    .role-table tbody tr:nth-child(odd) {
+      background: #fff;
+    }
+
+    .role-table tbody td {
+      padding: 11px 16px;
+      font-size: 12.5px;
+      border-bottom: 1px solid #e0f9ff;
+      vertical-align: top;
+    }
+
+    .role-table td strong {
+      color: #005f73;
+    }
+
+    /* ── Permission Matrix ── */
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .matrix-table th,
+    .matrix-table td {
+      padding: 10px 14px;
+      border: 1px solid #e0f9ff;
+      text-align: center;
+    }
+
+    .matrix-table thead {
+      background: #005f73;
+      color: white;
+    }
+
+    .matrix-table tbody tr:nth-child(even) {
+      background: #f0fdff;
+    }
+
+    .matrix-table td:first-child {
+      text-align: left;
+      font-weight: 500;
+      color: #334155;
+    }
+
+    .yes {
+      color: #16a34a;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .no {
+      color: #dc2626;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .partial {
+      color: #d97706;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    /* ── Info Box ── */
+    .info-box {
+      background: #f0fdff;
+      border: 1px solid #b3f0ff;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .info-box .ib-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .info-box .ib-body h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #005f73;
+      margin-bottom: 4px;
+    }
+
+    .info-box .ib-body p {
+      font-size: 12.5px;
+      color: #475569;
+    }
+
+    .warn-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 12.5px;
+      color: #92400e;
+    }
+
+    /* ── Two Column Layout ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    /* ── Sub section ── */
+    .sub-section {
+      margin-bottom: 28px;
+    }
+
+    .sub-section h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      color: #005f73;
+      margin-bottom: 12px;
+      padding-left: 10px;
+      border-left: 3px solid #00bcd4;
+    }
+
+    /* ── Tech Stack ── */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .tech-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+
+    .tech-item .tech-icon {
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    .tech-item .tech-name {
+      font-weight: 600;
+      font-size: 13px;
+      color: #334155;
+    }
+
+    .tech-item .tech-role {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    /* ── Grading Table ── */
+    .grade-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 10px;
+      overflow: hidden;
+      font-size: 12.5px;
+    }
+
+    .grade-table th {
+      background: #005f73;
+      color: white;
+      padding: 10px 14px;
+      text-align: left;
+    }
+
+    .grade-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #e0f9ff;
+    }
+
+    .grade-table tr:nth-child(even) {
+      background: #f0fdff;
+    }
+
+    /* ── Page number in footer ── */
+    .page-footer {
+      text-align: center;
+      font-size: 11px;
+      color: #94a3b8;
+      padding: 20px 0;
+      border-top: 1px solid #e0f9ff;
+      margin-top: 30px;
+    }
+
+    /* ── Action Flow Diagram ── */
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin: 16px 0;
+      overflow-x: auto;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .flow-node {
+      background: linear-gradient(135deg, #005f73, #0a9396);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 25px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .flow-arrow {
+      color: #00bcd4;
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 4px;
+    }
+
+    .highlight {
+      background: linear-gradient(135deg, #00bcd4, #00e5ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body>
+
+  <button class="print-btn no-print" onclick="window.print()">🖨️ Save as PDF</button>
+
+  <!-- =================== COVER PAGE =================== -->
+  <div class="cover">
+    <div class="cover-logo">Enroll<span>X</span></div>
+    <div class="cover-subtitle">University Course Registration System</div>
+    <div class="cover-divider"></div>
+    <div class="cover-desc">
+      A complete web-based university management portal enabling students to enroll in courses,
+      faculty to manage results, and administrators to oversee the entire institution —
+      all in one unified platform.
+    </div>
+    <div class="cover-badges">
+      <div class="cover-badge">🎓 Student Portal</div>
+      <div class="cover-badge">👨‍🏫 Faculty Portal</div>
+      <div class="cover-badge">🛡️ Admin Panel</div>
+      <div class="cover-badge">📊 Results Management</div>
+    </div>
+    <div class="cover-version">Version 1.0 &nbsp;·&nbsp; April 2026</div>
+    <div class="cover-footer">
+      Powered by Firebase &nbsp;·&nbsp; Hosted at enrollx-c17aa.web.app
+    </div>
+  </div>
+
+  <!-- =================== MAIN CONTENT =================== -->
+  <div class="content">
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h2>📋 Table of Contents</h2>
+      <ol>
+        <li>System Overview <span>– Purpose, portals, and tech stack</span></li>
+        <li>Student Portal <span>– Registration, enrollment, courses, results</span></li>
+        <li>Faculty Portal <span>– Dashboard, students, marks entry</span></li>
+        <li>Admin Panel <span>– Super Admin, Department Admin, roles</span></li>
+        <li>User Workflows &amp; Action Flows <span>– Step-by-step process diagrams</span></li>
+        <li>Role Permissions Matrix <span>– Who can do what</span></li>
+        <li>Results &amp; Grading System <span>– How marks and GPA work</span></li>
+        <li>Security &amp; Authentication <span>– Firebase Auth, Firestore rules</span></li>
+      </ol>
+    </div>
+
+    <!-- =================== SECTION 1: Overview =================== -->
+    <section>
+      <div class="section-header">
+        <div class="section-icon">🏛️</div>
+        <div class="section-title">
+          <h2>1. System Overview</h2>
+          <p>EnrollX is a full-featured university course registration and management platform</p>
+        </div>
+      </div>
+
+      <div class="intro-grid">
+        <div class="intro-card">
+          <div class="ic-num">3</div>
+          <div class="ic-label">User Portals</div>
+        </div>
+        <div class="intro-card">
+          <div class="ic-num">20+</div>
+          <div class="ic-label">Features & Modules</div>
+        </div>
+        <div class="intro-card">
+          <div class="ic-num">100%</div>
+          <div class="ic-label">Cloud-Based (Firebase)</div>
+        </div>
+      </div>
+
+      <p style="color:#475569; margin-bottom:20px;">
+        EnrollX is designed to replace manual course registration paperwork with a live,
+        role-based web portal. Students register for courses, faculty upload marks,
+        and administrators manage everything — users, courses, faculty, and results —
+        all in real-time using Firebase Firestore as the backend.
+      </p>
+
+      <div class="sub-section">
+        <h3>Technology Stack</h3>
+        <div class="tech-grid">
+          <div class="tech-item">
+            <div class="tech-icon">🔥</div>
+            <div class="tech-name">Firebase Auth</div>
+            <div class="tech-role">Authentication</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">🗄️</div>
+            <div class="tech-name">Firestore</div>
+            <div class="tech-role">Database</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">🌐</div>
+            <div class="tech-name">Firebase Hosting</div>
+            <div class="tech-role">Deployment</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon">🎨</div>
+            <div class="tech-name">HTML/CSS/JS</div>
+            <div class="tech-role">Frontend</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <h3>Three Portals at a Glance</h3>
+        <table class="role-table">
+          <thead>
+            <tr>
+              <th>Portal</th>
+              <th>URL Path</th>
+              <th>Accessible By</th>
+              <th>Primary Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>🎓 Student Portal</strong></td>
+              <td><code>/login.html</code></td>
+              <td>Registered Students</td>
+              <td>Browse & enroll in courses, view results, download transcripts</td>
+            </tr>
+            <tr>
+              <td><strong>👨‍🏫 Faculty Portal</strong></td>
+              <td><code>/faculty-login.html</code></td>
+              <td>Assigned Faculty Members</td>
+              <td>View enrolled students, enter internal & external marks</td>
+            </tr>
+            <tr>
+              <td><strong>🛡️ Admin Panel</strong></td>
+              <td><code>/admin-login.html</code></td>
+              <td>Super/Dept/Exam/Placement Admins</td>
+              <td>Manage students, faculty, courses, admins, and results</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =================== SECTION 2: Student Portal =================== -->
+    <div class="page-break"></div>
+    <section>
+      <div class="section-header">
+        <div class="section-icon">🎓</div>
+        <div class="section-title">
+          <h2>2. Student Portal</h2>
+          <p>Everything a student needs — from registration to results</p>
+        </div>
+      </div>
+
+      <div class="portal-card student">
+        <h3>🎓 Student Portal</h3>
+        <div class="url-badge">https://enrollx-c17aa.web.app/login.html</div>
+        <p>The student portal allows university students to manage their academic journey digitally — enrolling in
+          courses, tracking registration status, and viewing their academic results and GPA.</p>
+        <ul class="feature-list">
+          <li>Secure email + password login</li>
+          <li>Self-registration with student ID</li>
+          <li>Browse all available courses by dept/semester</li>
+          <li>One-click course enrollment</li>
+          <li>Drop enrolled courses</li>
+          <li>View enrollment status & history</li>
+          <li>View internal + external marks</li>
+          <li>Auto-calculated CGPA display</li>
+          <li>Downloadable transcript (PDF)</li>
+          <li>Profile page with personal details</li>
+          <li>Password reset via email or phone</li>
+          <li>Dark mode toggle</li>
+        </ul>
+      </div>
+
+      <div class="sub-section" style="margin-top:24px;">
+        <h3>Student Pages & What They Show</h3>
+        <table class="role-table">
+          <thead>
+            <tr>
+              <th>Page</th>
+              <th>What the Student Sees / Can Do</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Dashboard</strong></td>
+              <td>Summary stats: enrolled courses count, CGPA, results count. Quick links to enroll and view results.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Browse Courses</strong></td>
+              <td>All available courses with course name, code, department, semester, seats available, faculty name.
+                Filter and search. Enroll button per course.</td>
+            </tr>
+            <tr>
+              <td><strong>My Enrollments</strong></td>
+              <td>List of all courses the student is enrolled in. Status badge (enrolled/dropped). Option to drop a
+                course.</td>
+            </tr>
+            <tr>
+              <td><strong>My Results</strong></td>
+              <td>Results per course: Internal marks (0–50), External marks (0–50), Total (0–100), Grade
+                (O/A+/A/B+/B/C/F), CGPA. Download transcript button.</td>
+            </tr>
+            <tr>
+              <td><strong>Profile</strong></td>
+              <td>Personal info: name, student ID, email, department, semester, phone. Edit phone number.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <h3>Course Enrollment Flow</h3>
+        <div class="flow-diagram">
+          <div class="flow-node">Login</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Browse Courses</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Click Enroll</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Seat Reserved</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">My Enrollments</div>
+        </div>
+        <div class="warn-box" style="margin-top:12px;">
+          ⚠️ <span>If a course has <strong>0 available seats</strong>, the Enroll button is disabled and shows "Full".
+            Dropping a course automatically restores a seat.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== SECTION 3: Faculty Portal =================== -->
+    <div class="page-break"></div>
+    <section>
+      <div class="section-header">
+        <div class="section-icon">👨‍🏫</div>
+        <div class="section-title">
+          <h2>3. Faculty Portal</h2>
+          <p>Tools for faculty to view students and manage result entry</p>
+        </div>
+      </div>
+
+      <div class="portal-card faculty">
+        <h3>👨‍🏫 Faculty Portal</h3>
+        <div class="url-badge">https://enrollx-c17aa.web.app/faculty-login.html</div>
+        <p>Faculty members log in to view all students enrolled in their assigned courses and enter internal & external
+          marks. The system automatically calculates totals, grades, and GPA points.</p>
+        <ul class="feature-list">
+          <li>Login with assigned email + password</li>
+          <li>View assigned courses only</li>
+          <li>See all enrolled students per course</li>
+          <li>Enter internal marks (0–50)</li>
+          <li>Enter external marks (0–50)</li>
+          <li>Auto grade + total calculation</li>
+          <li>Edit previously entered marks</li>
+          <li>Bulk save all marks at once</li>
+          <li>View recent activity log</li>
+          <li>Profile page with designation</li>
+          <li>Dark mode toggle</li>
+          <li>Password reset</li>
+        </ul>
+      </div>
+
+      <div class="sub-section" style="margin-top:24px;">
+        <h3>Faculty Pages & What They Show</h3>
+        <table class="role-table">
+          <thead>
+            <tr>
+              <th>Page</th>
+              <th>What the Faculty Sees / Can Do</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Dashboard</strong></td>
+              <td>Stats: assigned courses count, total students across courses, results uploaded count. Cards showing
+                each assigned course with "View Students" and "Manage Results" buttons.</td>
+            </tr>
+            <tr>
+              <td><strong>Enrolled Students</strong></td>
+              <td>Dropdown to select a course → table shows: Student Name, Student ID, Department, Semester, Status.
+                Auto-loads first assigned course.</td>
+            </tr>
+            <tr>
+              <td><strong>Manage Results</strong></td>
+              <td>Dropdown to select a course → table shows all enrolled students with editable Internal (0–50) and
+                External (0–50) mark inputs. "Save All" button commits results to database.</td>
+            </tr>
+            <tr>
+              <td><strong>Profile</strong></td>
+              <td>Faculty name, email, department, designation, phone number display.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <h3>Result Entry Flow</h3>
+        <div class="flow-diagram">
+          <div class="flow-node">Faculty Login</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Manage Results</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Select Course</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Enter Marks</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Click Save All</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Saved ✓</div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <div class="ib-icon">📌</div>
+        <div class="ib-body">
+          <h4>Course Assignment Requirement</h4>
+          <p>Faculty can only see courses that have been <strong>assigned to them by an admin</strong>. If the "Select
+            Course" dropdown is empty, the admin must go to Admin → Courses → Edit Course and select this faculty member
+            from the faculty dropdown.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== SECTION 4: Admin Panel =================== -->
+    <div class="page-break"></div>
+    <section>
+      <div class="section-header">
+        <div class="section-icon">🛡️</div>
+        <div class="section-title">
+          <h2>4. Admin Panel</h2>
+          <p>Full system management — courses, students, faculty, and admins</p>
+        </div>
+      </div>
+
+      <div class="portal-card admin">
+        <h3>🛡️ Admin Panel</h3>
+        <div class="url-badge">https://enrollx-c17aa.web.app/admin-login.html</div>
+        <p>The Admin Panel is the control center of EnrollX. Super Admins have unrestricted access. Department,
+          Placement, and Exam Admins have scoped access based on their role type.</p>
+        <ul class="feature-list">
+          <li>View system-wide statistics dashboard</li>
+          <li>Add / Edit / Delete courses</li>
+          <li>Assign faculty to courses</li>
+          <li>View and edit student records</li>
+          <li>Add faculty members (creates Auth account)</li>
+          <li>Edit faculty details</li>
+          <li>Add administrators with role assignment</li>
+          <li>Edit admin name, role, department</li>
+          <li>Delete administrators</li>
+          <li>Department-scoped access control</li>
+          <li>Recent enrollment activity feed</li>
+          <li>Enrollment & course analytics charts</li>
+        </ul>
+      </div>
+
+      <div class="sub-section" style="margin-top:24px;">
+        <h3>Admin Roles Explained</h3>
+        <table class="role-table">
+          <thead>
+            <tr>
+              <th>Role</th>
+              <th>Access Scope</th>
+              <th>Restrictions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Super Admin</strong></td>
+              <td>Everything — all departments, all features</td>
+              <td>None. Can edit/delete all admins, courses, faculty.</td>
+            </tr>
+            <tr>
+              <td><strong>Department Admin</strong></td>
+              <td>Only their assigned department's students, courses, faculty, enrollments</td>
+              <td>Cannot access Administrators page. Data is filtered by department.</td>
+            </tr>
+            <tr>
+              <td><strong>Placement Admin</strong></td>
+              <td>Student data and placement-relevant info</td>
+              <td>Cannot access Courses or Faculty pages. Cannot add/delete data.</td>
+            </tr>
+            <tr>
+              <td><strong>Exam Admin</strong></td>
+              <td>Results and exam-related data</td>
+              <td>Cannot add/delete records. No access to add buttons.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <h3>Admin Dashboard Stats</h3>
+        <div class="two-col">
+          <div>
+            <p style="color:#475569; font-size:12.5px; margin-bottom:10px;">The dashboard shows real-time animated
+              counters for:</p>
+            <ul style="padding-left:18px; color:#334155; font-size:12.5px; line-height:2;">
+              <li>Total Students registered</li>
+              <li>Total Faculty members</li>
+              <li>Total Courses available</li>
+              <li>Active Enrollments</li>
+              <li>Total Results uploaded</li>
+            </ul>
+          </div>
+          <div>
+            <p style="color:#475569; font-size:12.5px; margin-bottom:10px;">Interactive charts include:</p>
+            <ul style="padding-left:18px; color:#334155; font-size:12.5px; line-height:2;">
+              <li>🍩 Doughnut: Enrollments by Department</li>
+              <li>📊 Bar Chart: Courses by Semester</li>
+              <li>📋 Recent Activity Feed (enrollments)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== SECTION 5: Workflows =================== -->
+    <div class="page-break"></div>
+    <section>
+      <div class="section-header">
+        <div class="section-icon">🔄</div>
+        <div class="section-title">
+          <h2>5. User Workflows & Action Flows</h2>
+          <p>Step-by-step process for every major action in the system</p>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <h3>Student Registration & First Login</h3>
+        <ol class="flow-steps">
+          <li class="flow-step">
+            <div class="flow-step-body">
+              <h4>Visit Student Login Page</h4>
+              <p>Go to <code>enrollx-c17aa.web.app/login.html</code> — click "Register" to create a new account.</p>
+            </div>
+          </li>
+          <li class="flow-step">
+            <div class="flow-step-body">
+              <h4>Fill Registration Form</h4>
+              <p>Enter: Full Name, Student ID (e.g. CS2023001), Email, Password, Department, Semester, Phone number.</p>
+            </div>
+          </li>
+          <li class="flow-step">
+            <div class="flow-step-body">
+              <h4>Account Created</h4>
+              <p>Firebase Auth creates the login account. A Firestore document is created in the <code>students</code>
+                collection with all profile data.</p>
+            </div>
+          </li>
+          <li class="flow-step">
+            <div class="flow-step-body">
+              <h4>Redirect to Dashboard</h4>
+              <p>Student is automatically logged in and redirected to their dashboard.</p>
+            </div>
+          </li>
+          <li class="flow-step">
+            <div class="flow-step-body">
+              <h4>Browse & Enroll in Courses</h4>
+              <p>Navigate to "My Courses" → find a course → click "Enroll". Available seats decrease by 1.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="sub-section">
+        <h3>Faculty Account Creation by Admin</h3>
+        <ol class="flow-steps">
+          <li class="flow-step">
+            <div class="flow-step-body">
+              <h4>Super Admin logs into Admin Panel</h4>
+              <p>Using <code>/admin-login.html</code> with admin credentials.</p>
+            </div>
+          </li>
+          <li class="flow-step">
+            <div class="flow-step-body">
+              <h4>Navigate to Faculty → Add Faculty</h4>
+              <p>Fill in: Name, Email, Password (min 6 chars), Department, Designation, Phone.</p>
+            </div>
+          </li>
+          <li class="flow-step">
+            <div class="flow-step-body">
+              <h4>Firebase Account Created</h4>
+              <p>A Firebase Auth account is created for the faculty. A Firestore document is saved in the
+                <code>faculty</code> collection with role = "faculty".</p>
+            </div>
+          </li>
+          <li class="flow-step">
+            <div class="flow-step-body">
+              <h4>⚠️ Admin is Signed Out (Browser Limitation)</h4>
+              <p>Creating a new user via browser Firebase SDK signs out the current session. Admin must log back in at
+                <code>/admin-login.html</code>.</p>
+            </div>
+          </li>
+          <li class="flow-step">
+            <div class="flow-step-body">
+              <h4>Assign Course to Faculty</h4>
+              <p>Go to Courses → Edit the course → select the faculty from the dropdown → Save. The faculty can now see
+                this course in their portal.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="sub-section">
+        <h3>Password Reset Flow</h3>
+        <div class="two-col">
+          <div>
+            <h4 style="font-size:13px; color:#005f73; margin-bottom:8px;">📧 Via Email</h4>
+            <ol class="flow-steps" style="margin:0;">
+              <li class="flow-step">
+                <div class="flow-step-body">
+                  <h4>Go to Forgot Password</h4>
+                  <p>Click "Forgot Password?" on login page.</p>
+                </div>
+              </li>
+              <li class="flow-step">
+                <div class="flow-step-body">
+                  <h4>Enter Email</h4>
+                  <p>Type registered email address.</p>
+                </div>
+              </li>
+              <li class="flow-step">
+                <div class="flow-step-body">
+                  <h4>Check Inbox/Spam</h4>
+                  <p>Firebase sends a reset link. Check spam/junk folder.</p>
+                </div>
+              </li>
+              <li class="flow-step">
+                <div class="flow-step-body">
+                  <h4>Click Link → Set New Password</h4>
+                  <p>Reset completes via Firebase.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <div>
+            <h4 style="font-size:13px; color:#005f73; margin-bottom:8px;">📱 Via Phone Number</h4>
+            <ol class="flow-steps" style="margin:0;">
+              <li class="flow-step">
+                <div class="flow-step-body">
+                  <h4>Click "Phone Number" Tab</h4>
+                  <p>On the forgot password page.</p>
+                </div>
+              </li>
+              <li class="flow-step">
+                <div class="flow-step-body">
+                  <h4>Enter Registered Phone</h4>
+                  <p>System looks up the account by phone number.</p>
+                </div>
+              </li>
+              <li class="flow-step">
+                <div class="flow-step-body">
+                  <h4>Email Shown (Masked)</h4>
+                  <p>Shows har***@gmail.com for privacy.</p>
+                </div>
+              </li>
+              <li class="flow-step">
+                <div class="flow-step-body">
+                  <h4>Send Reset Link</h4>
+                  <p>Firebase sends reset email to that account.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== SECTION 6: Permissions =================== -->
+    <div class="page-break"></div>
+    <section>
+      <div class="section-header">
+        <div class="section-icon">🔐</div>
+        <div class="section-title">
+          <h2>6. Role Permissions Matrix</h2>
+          <p>Who can view, create, edit, and delete across the system</p>
+        </div>
+      </div>
+
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th style="text-align:left;">Action / Feature</th>
+            <th>Super Admin</th>
+            <th>Dept Admin</th>
+            <th>Exam Admin</th>
+            <th>Placement Admin</th>
+            <th>Faculty</th>
+            <th>Student</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>View Dashboard Stats</strong></td>
+            <td class="yes">✓</td>
+            <td class="yes">✓</td>
+            <td class="yes">✓</td>
+            <td class="yes">✓</td>
+            <td class="yes">✓</td>
+            <td class="yes">✓</td>
+          </tr>
+          <tr>
+            <td><strong>Add New Course</strong></td>
+            <td class="yes">✓</td>
+            <td class="yes">✓</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>Edit / Delete Course</strong></td>
+            <td class="yes">✓</td>
+            <td class="partial">Dept only</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>Assign Faculty to Course</strong></td>
+            <td class="yes">✓</td>
+            <td class="partial">Dept only</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>View Students</strong></td>
+            <td class="yes">✓</td>
+            <td class="partial">Dept only</td>
+            <td class="yes">✓</td>
+            <td class="yes">✓</td>
+            <td class="partial">Own courses</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>Edit Student Details</strong></td>
+            <td class="yes">✓</td>
+            <td class="partial">Dept only</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>Delete Student</strong></td>
+            <td class="yes">✓</td>
+            <td class="partial">Dept only</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>Add Faculty Member</strong></td>
+            <td class="yes">✓</td>
+            <td class="yes">✓</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>Edit / Delete Faculty</strong></td>
+            <td class="yes">✓</td>
+            <td class="partial">Dept only</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>Manage Administrators</strong></td>
+            <td class="yes">✓</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>Edit Admin Role/Dept</strong></td>
+            <td class="yes">✓</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>Enter/Edit Marks</strong></td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="yes">✓</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>View Own Marks</strong></td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="yes">✓</td>
+          </tr>
+          <tr>
+            <td><strong>Enroll in Course</strong></td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="yes">✓</td>
+          </tr>
+          <tr>
+            <td><strong>Drop a Course</strong></td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="yes">✓</td>
+          </tr>
+          <tr>
+            <td><strong>Download Transcript</strong></td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="yes">✓</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:11.5px; color:#94a3b8; margin-top:10px;">
+        ✓ = Full Access &nbsp;·&nbsp; ✗ = No Access &nbsp;·&nbsp; <span style="color:#d97706; font-weight:600;">Dept
+          only</span> = Access limited to their assigned department's data
+      </p>
+    </section>
+
+    <!-- =================== SECTION 7: Grading System =================== -->
+    <div class="page-break"></div>
+    <section>
+      <div class="section-header">
+        <div class="section-icon">📊</div>
+        <div class="section-title">
+          <h2>7. Results & Grading System</h2>
+          <p>How marks, grades, and CGPA are calculated automatically</p>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-bottom:24px;">
+        <div class="info-box" style="margin-bottom:0;">
+          <div class="ib-icon">📝</div>
+          <div class="ib-body">
+            <h4>Internal Marks</h4>
+            <p>Faculty enters a score from <strong>0 to 50</strong>. This typically covers assignments, mid-term tests,
+              attendance, and class performance.</p>
+          </div>
+        </div>
+        <div class="info-box" style="margin-bottom:0;">
+          <div class="ib-icon">📋</div>
+          <div class="ib-body">
+            <h4>External Marks</h4>
+            <p>Faculty enters a score from <strong>0 to 50</strong>. This represents the end-semester or final
+              examination score.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <h3>Grading Scale</h3>
+        <table class="grade-table">
+          <thead>
+            <tr>
+              <th>Total Marks (out of 100)</th>
+              <th>Grade</th>
+              <th>Grade Points</th>
+              <th>Performance Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>90 – 100</td>
+              <td><strong>O</strong></td>
+              <td>10.0</td>
+              <td>Outstanding</td>
+            </tr>
+            <tr>
+              <td>80 – 89</td>
+              <td><strong>A+</strong></td>
+              <td>9.0</td>
+              <td>Excellent</td>
+            </tr>
+            <tr>
+              <td>70 – 79</td>
+              <td><strong>A</strong></td>
+              <td>8.0</td>
+              <td>Very Good</td>
+            </tr>
+            <tr>
+              <td>60 – 69</td>
+              <td><strong>B+</strong></td>
+              <td>7.0</td>
+              <td>Good</td>
+            </tr>
+            <tr>
+              <td>50 – 59</td>
+              <td><strong>B</strong></td>
+              <td>6.0</td>
+              <td>Above Average</td>
+            </tr>
+            <tr>
+              <td>40 – 49</td>
+              <td><strong>C</strong></td>
+              <td>5.0</td>
+              <td>Satisfactory</td>
+            </tr>
+            <tr>
+              <td>Below 40</td>
+              <td><strong>F</strong></td>
+              <td>0.0</td>
+              <td>Fail</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-section">
+        <h3>CGPA Calculation Formula</h3>
+        <div class="info-box">
+          <div class="ib-icon">🧮</div>
+          <div class="ib-body">
+            <h4>Formula</h4>
+            <p>
+              <strong>CGPA = Σ (Grade Points × Credits) ÷ Σ Credits</strong><br>
+              For each course: multiply the grade point by the course's credit hours. Sum all, then divide by total
+              credits.
+              E.g., two 4-credit courses with 8.0 and 9.0 grade points → CGPA = (32 + 36) / 8 = <strong>8.5</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <h3>What Students See in Results Page</h3>
+        <table class="role-table">
+          <thead>
+            <tr>
+              <th>Column</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Course Name</strong></td>
+              <td>Name of the enrolled course</td>
+            </tr>
+            <tr>
+              <td><strong>Course Code</strong></td>
+              <td>Unique identifier (e.g. CS401)</td>
+            </tr>
+            <tr>
+              <td><strong>Internal (50)</strong></td>
+              <td>Marks entered by faculty for internal assessment</td>
+            </tr>
+            <tr>
+              <td><strong>External (50)</strong></td>
+              <td>Marks entered by faculty for end-semester exam</td>
+            </tr>
+            <tr>
+              <td><strong>Total (100)</strong></td>
+              <td>Internal + External, auto-calculated</td>
+            </tr>
+            <tr>
+              <td><strong>Grade</strong></td>
+              <td>Letter grade based on total (O/A+/A/B+/B/C/F)</td>
+            </tr>
+            <tr>
+              <td><strong>CGPA</strong></td>
+              <td>Shown at bottom of page as weighted average across all results</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =================== SECTION 8: Security =================== -->
+    <div class="page-break"></div>
+    <section>
+      <div class="section-header">
+        <div class="section-icon">🔒</div>
+        <div class="section-title">
+          <h2>8. Security & Authentication</h2>
+          <p>How data is protected and access is controlled</p>
+        </div>
+      </div>
+
+      <div class="sub-section">
+        <h3>Authentication System</h3>
+        <ol class="flow-steps">
+          <li class="flow-step">
+            <div class="flow-step-body">
+              <h4>Firebase Authentication</h4>
+              <p>All users (students, faculty, admins) log in using Firebase Auth — email + password. Firebase handles
+                password hashing and token management securely.</p>
+            </div>
+          </li>
+          <li class="flow-step">
+            <div class="flow-step-body">
+              <h4>Role Verification on Login</h4>
+              <p>After logging in, the system checks the Firestore collection corresponding to the portal. Student login
+                checks <code>students</code> collection, Faculty checks <code>faculty</code>, Admin checks
+                <code>admins</code>. If the document doesn't exist, access is denied even with valid credentials.</p>
+            </div>
+          </li>
+          <li class="flow-step">
+            <div class="flow-step-body">
+              <h4>Route Guards (Page Protection)</h4>
+              <p>Every protected page calls <code>requireAuth(role)</code> on load. If the user is not authenticated or
+                doesn't have the correct role, they are redirected to the appropriate login page.</p>
+            </div>
+          </li>
+          <li class="flow-step">
+            <div class="flow-step-body">
+              <h4>Firestore Security Rules</h4>
+              <p>Server-side rules restrict database operations. Students can only update <code>availableSeats</code> on
+                courses (for enrollment/drop). Admins can write to any collection. Unauthenticated users have no
+                database access.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="sub-section">
+        <h3>Firestore Data Collections</h3>
+        <table class="role-table">
+          <thead>
+            <tr>
+              <th>Collection</th>
+              <th>Documents Stored</th>
+              <th>Key Fields</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>students</code></td>
+              <td>One per student (doc ID = Firebase Auth UID)</td>
+              <td>name, email, studentId, department, semester, phone, role</td>
+            </tr>
+            <tr>
+              <td><code>faculty</code></td>
+              <td>One per faculty (doc ID = Firebase Auth UID)</td>
+              <td>name, email, department, designation, phone, role</td>
+            </tr>
+            <tr>
+              <td><code>admins</code></td>
+              <td>One per admin (doc ID = Firebase Auth UID)</td>
+              <td>name, email, adminType, adminDepartment, role</td>
+            </tr>
+            <tr>
+              <td><code>courses</code></td>
+              <td>One per course</td>
+              <td>courseName, courseCode, credits, department, semester, facultyId, facultyName, totalSeats,
+                availableSeats</td>
+            </tr>
+            <tr>
+              <td><code>enrollments</code></td>
+              <td>One per student-course pair</td>
+              <td>studentId, courseId, courseName, status (enrolled/dropped), enrolledAt</td>
+            </tr>
+            <tr>
+              <td><code>results</code></td>
+              <td>One per student-course pair</td>
+              <td>studentId, courseId, facultyId, internalMarks, externalMarks, total, grade, gpaPoints, createdAt</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="warn-box">
+        ⚠️ <span><strong>Important:</strong> A Firebase Auth account alone is not enough for access. Every user must
+          also have a matching Firestore document in their respective collection (<code>students</code> /
+          <code>faculty</code> / <code>admins</code>). If a document is missing, login will be rejected with "Access
+          denied".</span>
+      </div>
+    </section>
+
+
+
+  </div>
+
+  <script>
+    // Auto-trigger print dialog hint
+    document.addEventListener('keydown', function (e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+        // Let browser handle it naturally
+      }
+    });
+  </script>
+
+</body>
+
+</html>

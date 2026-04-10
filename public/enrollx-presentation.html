@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EnrollX – Project Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#eee}
+.page{width:297mm;min-height:210mm;background:#fff;margin:0 auto 12px;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.print-btn{position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#005f73,#00bcd4);color:#fff;border:none;padding:12px 26px;border-radius:25px;font-weight:700;font-size:14px;cursor:pointer;z-index:999;box-shadow:0 4px 15px rgba(0,188,212,0.4);font-family:Inter,sans-serif}
+@page{size:A4 landscape;margin:0}
+@media print{.print-btn,.no-print{display:none!important}.page{margin:0;page-break-after:always;width:100%;min-height:100vh}}
+
+/* COVER */
+.cover{background:linear-gradient(135deg,#003d4f 0%,#005f73 30%,#0a9396 60%,#00bcd4 85%,#00e5ff 100%);color:#fff;min-height:210mm;justify-content:center;align-items:center;display:flex;flex-direction:column;text-align:center;padding:40px;position:relative}
+.cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(255,255,255,0.07) 0%,transparent 55%),radial-gradient(ellipse at 80% 70%,rgba(255,255,255,0.05) 0%,transparent 55%)}
+.cover-badge{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);padding:8px 22px;border-radius:25px;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;display:inline-block}
+.cover h1{font-family:'Outfit',sans-serif;font-size:52px;font-weight:800;letter-spacing:-2px;line-height:1.1;margin-bottom:16px}
+.cover h1 span{opacity:0.7}
+.cover-sub{font-size:14px;opacity:0.85;letter-spacing:2px;text-transform:uppercase;margin-bottom:30px}
+.cover-tagline{font-size:18px;opacity:0.9;max-width:480px;margin:0 auto 36px;line-height:1.6;font-weight:300}
+.cover-pills{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+.cover-pill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);padding:8px 18px;border-radius:20px;font-size:12px;font-weight:600}
+.cover-mockup{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:14px;padding:20px 28px;max-width:480px;margin:0 auto;backdrop-filter:blur(10px)}
+.cover-mockup-bar{display:flex;align-items:center;gap:6px;margin-bottom:14px}
+.dot{width:10px;height:10px;border-radius:50%}
+.dot.r{background:#ef4444}.dot.y{background:#f59e0b}.dot.g{background:#10b981}
+.cover-mockup-url{font-size:11px;opacity:0.6;margin-left:auto;font-family:monospace}
+.cover-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cover-stat{background:rgba(255,255,255,0.1);border-radius:10px;padding:14px;text-align:center}
+.cover-stat .n{font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;line-height:1}
+.cover-stat .l{font-size:10px;opacity:0.7;margin-top:3px;text-transform:uppercase;letter-spacing:1px}
+.cover-footer-bar{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.2);padding:12px 40px;display:flex;justify-content:space-between;font-size:11px;opacity:0.7}
+
+/* SECTION STYLE */
+.pg{padding:36px 44px;flex:1}
+.pg-header{margin-bottom:28px;padding-bottom:16px;border-bottom:3px solid #e0f9ff}
+.pg-header h2{font-family:'Outfit',sans-serif;font-size:28px;color:#003d4f;margin-bottom:4px}
+.pg-header p{font-size:13px;color:#64748b}
+.pg-num{position:absolute;top:20px;right:30px;font-size:11px;color:#94a3b8;font-weight:600}
+.sidebar-accent{position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(180deg,#005f73,#00bcd4)}
+
+/* CARDS */
+.card-grid{display:grid;gap:14px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.card{background:linear-gradient(135deg,#f0fdff,#e0f9ff);border:1px solid #b3f0ff;border-radius:12px;padding:18px}
+.card h4{font-size:14px;font-weight:700;color:#005f73;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.card p{font-size:12px;color:#475569;line-height:1.5}
+.card.cyan{background:linear-gradient(135deg,#005f73,#0a9396);color:#fff}
+.card.cyan h4,.card.cyan p{color:#fff}
+.card.green{background:linear-gradient(135deg,#065f46,#059669);color:#fff}
+.card.green h4,.card.green p{color:#fff}
+.card.blue{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff}
+.card.blue h4,.card.blue p{color:#fff}
+.card.orange{background:linear-gradient(135deg,#92400e,#d97706);color:#fff}
+.card.orange h4,.card.orange p{color:#fff}
+
+/* UI SCREENS */
+.screen{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;font-size:11px}
+.screen-bar{background:linear-gradient(135deg,#005f73,#0a9396);padding:8px 12px;display:flex;align-items:center;gap:6px;color:#fff}
+.screen-bar .dots{display:flex;gap:4px}
+.screen-bar .dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4)}
+.screen-bar .title{font-size:10px;font-weight:600;margin-left:8px;opacity:0.85}
+.screen-body{padding:12px}
+.screen-nav{background:#fff;border-bottom:1px solid #e2e8f0;padding:6px 10px;display:flex;gap:8px;align-items:center}
+.screen-nav .brand{font-weight:800;color:#005f73;font-size:11px}
+.screen-nav a{font-size:9px;color:#64748b}
+.stat-mini{background:linear-gradient(135deg,#005f73,#00bcd4);color:#fff;border-radius:8px;padding:10px;text-align:center}
+.stat-mini .n{font-size:20px;font-weight:800}
+.stat-mini .l{font-size:9px;opacity:0.8;margin-top:2px}
+
+/* FLOW */
+.flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;row-gap:10px}
+.flow-box{background:linear-gradient(135deg,#005f73,#0a9396);color:#fff;padding:8px 14px;border-radius:22px;font-size:11px;font-weight:600;white-space:nowrap}
+.flow-arrow{color:#00bcd4;font-size:16px;font-weight:700;margin:0 6px}
+.flow-vertical{display:flex;flex-direction:column;align-items:flex-start;gap:0}
+.fv-row{display:flex;align-items:center;gap:8px;margin-bottom:2px}
+.fv-arrow{color:#00bcd4;font-size:18px;margin-left:22px}
+
+/* ARCH */
+.arch-layer{background:linear-gradient(135deg,#f0fdff,#e0f9ff);border:1px solid #b3f0ff;border-radius:10px;padding:12px 18px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.arch-layer .icon{font-size:22px}
+.arch-layer h4{font-size:13px;font-weight:700;color:#005f73;margin-bottom:2px}
+.arch-layer p{font-size:11px;color:#64748b}
+.arch-arrow{text-align:center;color:#00bcd4;font-size:20px;margin:2px 0}
+
+/* ROLE */
+.role-col{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden}
+.role-header{padding:14px 18px;color:#fff;font-weight:700;font-size:14px}
+.role-header.student{background:linear-gradient(135deg,#005f73,#0a9396)}
+.role-header.faculty{background:linear-gradient(135deg,#065f46,#059669)}
+.role-header.admin{background:linear-gradient(135deg,#1e3a8a,#2563eb)}
+.role-body{padding:14px 18px}
+.role-step{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+.role-step-num{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#005f73,#00bcd4);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.role-step p{font-size:11.5px;color:#334155;line-height:1.4}
+
+/* FUTURE */
+.future-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:18px;display:flex;gap:14px;align-items:flex-start;margin-bottom:12px}
+.future-icon{font-size:28px;flex-shrink:0}
+.future-card h4{font-size:13px;font-weight:700;color:#005f73;margin-bottom:4px}
+.future-card p{font-size:11.5px;color:#64748b;line-height:1.5}
+
+/* THANK YOU */
+.thankyou{background:linear-gradient(135deg,#003d4f,#005f73 40%,#0a9396 70%,#00bcd4 100%);color:#fff;min-height:210mm;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:50px}
+.thankyou h1{font-family:'Outfit',sans-serif;font-size:48px;font-weight:800;margin-bottom:12px}
+.thankyou h2{font-family:'Outfit',sans-serif;font-size:28px;font-weight:600;opacity:0.8;margin-bottom:30px}
+.thankyou p{font-size:15px;opacity:0.8;max-width:500px;margin:0 auto 36px;line-height:1.7}
+.thankyou-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+.thankyou-link{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);padding:10px 22px;border-radius:22px;font-size:13px;font-weight:600}
+.tech-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.tech-badge{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);padding:8px 16px;border-radius:8px;font-size:12px}
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">🖨️ Save as PDF</button>
+
+<!-- PAGE 1: COVER -->
+<div class="page cover">
+  <div style="position:relative;z-index:1;width:100%;max-width:800px;margin:0 auto">
+    <div class="cover-badge">🎓 Final Year Project – 2026</div>
+    <h1>Enroll<span>X</span></h1>
+    <div class="cover-sub">Smart University Registration System</div>
+    <div class="cover-tagline">"Your Academic Journey Starts Right Here"</div>
+    <div class="cover-pills">
+      <div class="cover-pill">🎓 Student Portal</div>
+      <div class="cover-pill">👨‍🏫 Faculty Portal</div>
+      <div class="cover-pill">🛡️ Admin Panel</div>
+      <div class="cover-pill">📊 Results & GPA</div>
+      <div class="cover-pill">🔥 Firebase Backend</div>
+    </div>
+    <div class="cover-mockup">
+      <div class="cover-mockup-bar">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <div class="cover-mockup-url">enrollx-c17aa.web.app</div>
+      </div>
+      <div class="cover-stat-row">
+        <div class="cover-stat"><div class="n">12+</div><div class="l">Courses</div></div>
+        <div class="cover-stat"><div class="n">3</div><div class="l">Portals</div></div>
+        <div class="cover-stat"><div class="n">100%</div><div class="l">Cloud</div></div>
+        <div class="cover-stat"><div class="n">4</div><div class="l">Admin Roles</div></div>
+        <div class="cover-stat"><div class="n">Live</div><div class="l">Firebase</div></div>
+        <div class="cover-stat"><div class="n">PDF</div><div class="l">Transcript</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="cover-footer-bar">
+    <span>Workflow · Architecture · UI Flow · Working Process</span>
+    <span>enrollx-c17aa.web.app &nbsp;|&nbsp; v1.0 · April 2026</span>
+  </div>
+</div>
+
+<!-- PAGE 2: OVERVIEW -->
+<div class="page">
+  <div class="sidebar-accent"></div>
+  <div class="pg">
+    <div class="pg-num">02 / 10</div>
+    <div class="pg-header">
+      <h2>🏛️ Project Overview</h2>
+      <p>Problem Statement, Solution, and Key Benefits</p>
+    </div>
+    <div class="card-grid g2" style="margin-bottom:18px">
+      <div class="card cyan">
+        <h4>❗ Problem Statement</h4>
+        <p>Universities still rely on paper-based or outdated manual systems for course registration — long queues, seat conflicts, no real-time availability, and no centralized result management. Faculty submit marks via spreadsheets, causing data loss and errors.</p>
+      </div>
+      <div class="card green">
+        <h4>✅ Our Solution – EnrollX</h4>
+        <p>A full-stack cloud-based web portal with 3 dedicated portals: Students browse and enroll in courses instantly, Faculty enter marks digitally, Administrators manage the entire university ecosystem from one control panel.</p>
+      </div>
+    </div>
+    <div class="card-grid g3" style="margin-bottom:18px">
+      <div class="card">
+        <h4>🎓 For Students</h4>
+        <p>Self-registration · Course browsing · One-click enrollment · Real-time seat tracking · View marks · Download PDF transcript · CGPA calculator</p>
+      </div>
+      <div class="card">
+        <h4>👨‍🏫 For Faculty</h4>
+        <p>View assigned courses · See enrolled student list · Enter internal & external marks · Auto grade calculation · Bulk save results</p>
+      </div>
+      <div class="card">
+        <h4>🛡️ For Admin</h4>
+        <p>Manage students, faculty, courses · 4 admin role types · Department-scoped access · Analytics charts · Assign faculty to courses</p>
+      </div>
+    </div>
+    <div class="card-grid g3">
+      <div class="card blue">
+        <h4>🔥 Firebase Backend</h4>
+        <p>Authentication + Firestore database + Hosting — 100% serverless, real-time, scalable cloud infrastructure</p>
+      </div>
+      <div class="card orange">
+        <h4>⚡ Real-Time Data</h4>
+        <p>Enrollments, seat availability, marks, and results update instantly across all users with no page refresh needed</p>
+      </div>
+      <div class="card">
+        <h4>📄 PDF Transcripts</h4>
+        <p>Students download formatted academic transcripts with grades, GPA, CGPA auto-calculated by the system</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: UI SCREENS -->
+<div class="page">
+  <div class="sidebar-accent"></div>
+  <div class="pg">
+    <div class="pg-num">03 / 10</div>
+    <div class="pg-header">
+      <h2>🖥️ UI Screen Flows</h2>
+      <p>Key interface screens across all three portals</p>
+    </div>
+    <div class="card-grid g3">
+      <!-- Home -->
+      <div class="screen">
+        <div class="screen-bar"><div class="dots"><span></span><span></span><span></span></div><div class="title">🏠 Home Page</div></div>
+        <div class="screen-nav"><div class="brand">EnrollX</div><a>Features</a><a>Login</a><a>Register</a></div>
+        <div class="screen-body">
+          <div style="background:linear-gradient(135deg,#005f73,#00bcd4);color:#fff;border-radius:8px;padding:12px;margin-bottom:8px">
+            <div style="font-size:16px;font-weight:800;font-family:Outfit">Your Academic Journey<br>Starts Right Here</div>
+            <div style="font-size:9px;opacity:0.8;margin:6px 0">Enroll in courses, track results, manage your academic life</div>
+            <div style="display:flex;gap:6px;margin-top:8px">
+              <div style="background:#fff;color:#005f73;padding:4px 10px;border-radius:12px;font-size:9px;font-weight:700">Get Started</div>
+              <div style="background:rgba(255,255,255,0.2);color:#fff;padding:4px 10px;border-radius:12px;font-size:9px">Explore</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px">
+            <div style="background:#f0fdff;border-radius:6px;padding:6px;text-align:center;font-size:9px;color:#005f73;font-weight:700">12+ Courses</div>
+            <div style="background:#f0fdff;border-radius:6px;padding:6px;text-align:center;font-size:9px;color:#005f73;font-weight:700">3 Portals</div>
+            <div style="background:#f0fdff;border-radius:6px;padding:6px;text-align:center;font-size:9px;color:#005f73;font-weight:700">100% Live</div>
+          </div>
+        </div>
+      </div>
+      <!-- Student Login -->
+      <div class="screen">
+        <div class="screen-bar"><div class="dots"><span></span><span></span><span></span></div><div class="title">🔐 Student Login</div></div>
+        <div class="screen-body" style="background:linear-gradient(135deg,#003d4f,#005f73)">
+          <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:14px;margin:4px">
+            <div style="color:#fff;font-weight:700;font-size:13px;text-align:center;margin-bottom:10px">Welcome Back 👋</div>
+            <div style="background:rgba(255,255,255,0.15);border-radius:6px;padding:6px 10px;margin-bottom:6px;font-size:9px;color:rgba(255,255,255,0.7)">📧 Email address</div>
+            <div style="background:rgba(255,255,255,0.15);border-radius:6px;padding:6px 10px;margin-bottom:10px;font-size:9px;color:rgba(255,255,255,0.7)">🔒 Password</div>
+            <div style="background:linear-gradient(135deg,#00bcd4,#00e5ff);color:#003d4f;border-radius:8px;padding:7px;text-align:center;font-size:10px;font-weight:700">Login to EnrollX</div>
+            <div style="text-align:center;margin-top:8px;font-size:9px;color:rgba(255,255,255,0.5)">Forgot Password? · Register</div>
+          </div>
+        </div>
+      </div>
+      <!-- Student Dashboard -->
+      <div class="screen">
+        <div class="screen-bar"><div class="dots"><span></span><span></span><span></span></div><div class="title">📊 Student Dashboard</div></div>
+        <div class="screen-body">
+          <div style="font-size:10px;font-weight:600;color:#005f73;margin-bottom:8px">👋 Hello, Ravi Kumar</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px">
+            <div style="background:linear-gradient(135deg,#005f73,#00bcd4);color:#fff;border-radius:7px;padding:7px;text-align:center"><div style="font-size:18px;font-weight:800">6</div><div style="font-size:8px;opacity:0.8">Enrolled</div></div>
+            <div style="background:linear-gradient(135deg,#059669,#10b981);color:#fff;border-radius:7px;padding:7px;text-align:center"><div style="font-size:18px;font-weight:800">8.7</div><div style="font-size:8px;opacity:0.8">CGPA</div></div>
+          </div>
+          <div style="background:#f0fdff;border-radius:6px;padding:5px 8px;font-size:9px;color:#334155;border-left:3px solid #00bcd4;margin-bottom:4px">📚 CS401 – Database Mgmt • <span style="color:#16a34a;font-weight:600">A</span></div>
+          <div style="background:#f0fdff;border-radius:6px;padding:5px 8px;font-size:9px;color:#334155;border-left:3px solid #00bcd4">📚 CS301 – Data Structures • <span style="color:#16a34a;font-weight:600">A+</span></div>
+        </div>
+      </div>
+      <!-- Course Registration -->
+      <div class="screen">
+        <div class="screen-bar"><div class="dots"><span></span><span></span><span></span></div><div class="title">📋 Course Registration</div></div>
+        <div class="screen-body">
+          <div style="font-size:10px;font-weight:600;color:#005f73;margin-bottom:8px">Browse Available Courses</div>
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:7px;overflow:hidden;margin-bottom:5px">
+            <div style="background:linear-gradient(135deg,#005f73,#00bcd4);color:#fff;padding:6px 10px;font-size:9px;font-weight:700">CS401 – Database Management</div>
+            <div style="padding:6px 10px;font-size:9px;color:#64748b">Sem 4 · 4 Credits · 51/55 seats · Dr. Johnson</div>
+            <div style="padding:0 10px 7px"><div style="background:linear-gradient(135deg,#005f73,#0a9396);color:#fff;border-radius:10px;padding:3px 12px;font-size:9px;font-weight:600;display:inline-block">Enroll Now</div></div>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:7px;overflow:hidden">
+            <div style="background:linear-gradient(135deg,#059669,#10b981);color:#fff;padding:6px 10px;font-size:9px;font-weight:700">MA201 – Calculus & Algebra</div>
+            <div style="padding:6px 10px;font-size:9px;color:#64748b">Sem 2 · 4 Credits · 78/80 seats</div>
+            <div style="padding:0 10px 7px"><div style="background:#fee2e2;color:#dc2626;border-radius:10px;padding:3px 10px;font-size:9px;font-weight:600;display:inline-block">Full</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- Results -->
+      <div class="screen">
+        <div class="screen-bar"><div class="dots"><span></span><span></span><span></span></div><div class="title">📈 Results Dashboard</div></div>
+        <div class="screen-body">
+          <div style="font-size:10px;font-weight:600;color:#005f73;margin-bottom:8px">My Results · CGPA: <span style="color:#00bcd4">8.75</span></div>
+          <table style="width:100%;border-collapse:collapse;font-size:9px">
+            <thead><tr style="background:linear-gradient(135deg,#005f73,#0a9396);color:#fff"><th style="padding:4px 6px;text-align:left">Course</th><th>Int</th><th>Ext</th><th>Total</th><th>Grade</th></tr></thead>
+            <tbody>
+              <tr style="background:#f0fdff"><td style="padding:3px 6px">CS401</td><td style="text-align:center">44</td><td style="text-align:center">40</td><td style="text-align:center">84</td><td style="text-align:center;color:#16a34a;font-weight:700">A+</td></tr>
+              <tr><td style="padding:3px 6px">CS301</td><td style="text-align:center">42</td><td style="text-align:center">38</td><td style="text-align:center">80</td><td style="text-align:center;color:#2563eb;font-weight:700">A</td></tr>
+              <tr style="background:#f0fdff"><td style="padding:3px 6px">MA201</td><td style="text-align:center">48</td><td style="text-align:center">45</td><td style="text-align:center">93</td><td style="text-align:center;color:#7c3aed;font-weight:700">O</td></tr>
+            </tbody>
+          </table>
+          <div style="margin-top:8px;background:linear-gradient(135deg,#00bcd4,#00e5ff);color:#003d4f;border-radius:8px;padding:5px 10px;font-size:9px;font-weight:700;text-align:center">📄 Download PDF Transcript</div>
+        </div>
+      </div>
+      <!-- Admin Panel -->
+      <div class="screen">
+        <div class="screen-bar"><div class="dots"><span></span><span></span><span></span></div><div class="title">🛡️ Admin Dashboard</div></div>
+        <div class="screen-body">
+          <div style="font-size:10px;font-weight:600;color:#005f73;margin-bottom:8px">System Overview</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px">
+            <div style="background:linear-gradient(135deg,#005f73,#00bcd4);color:#fff;border-radius:7px;padding:6px;text-align:center"><div style="font-size:16px;font-weight:800">124</div><div style="font-size:8px;opacity:0.8">Students</div></div>
+            <div style="background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:7px;padding:6px;text-align:center"><div style="font-size:16px;font-weight:800">8</div><div style="font-size:8px;opacity:0.8">Faculty</div></div>
+            <div style="background:linear-gradient(135deg,#065f46,#059669);color:#fff;border-radius:7px;padding:6px;text-align:center"><div style="font-size:16px;font-weight:800">18</div><div style="font-size:8px;opacity:0.8">Courses</div></div>
+            <div style="background:linear-gradient(135deg,#92400e,#d97706);color:#fff;border-radius:7px;padding:6px;text-align:center"><div style="font-size:16px;font-weight:800">436</div><div style="font-size:8px;opacity:0.8">Enrollments</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: WORKFLOW -->
+<div class="page">
+  <div class="sidebar-accent"></div>
+  <div class="pg">
+    <div class="pg-num">04 / 10</div>
+    <div class="pg-header">
+      <h2>🔄 Working Flow Diagram</h2>
+      <p>Complete end-to-end user journey from first visit to PDF transcript</p>
+    </div>
+    <div style="background:linear-gradient(135deg,#f0fdff,#e0f9ff);border:1px solid #b3f0ff;border-radius:14px;padding:28px 32px;margin-bottom:20px">
+      <div class="flow" style="margin-bottom:14px">
+        <div class="flow-box">🌐 Open Website</div><div class="flow-arrow">→</div>
+        <div class="flow-box">📝 Register Account</div><div class="flow-arrow">→</div>
+        <div class="flow-box">🔐 Login Auth</div><div class="flow-arrow">→</div>
+        <div class="flow-box">📊 Dashboard</div>
+      </div>
+      <div class="flow" style="margin-bottom:14px">
+        <div class="flow-box">📚 Browse Courses</div><div class="flow-arrow">→</div>
+        <div class="flow-box">💺 Check Seats</div><div class="flow-arrow">→</div>
+        <div class="flow-box">✅ Enroll</div><div class="flow-arrow">→</div>
+        <div class="flow-box">🔥 Firebase Update</div>
+      </div>
+      <div class="flow">
+        <div class="flow-box">👨‍🏫 Faculty Marks</div><div class="flow-arrow">→</div>
+        <div class="flow-box">🧮 GPA Calc</div><div class="flow-arrow">→</div>
+        <div class="flow-box">📈 View Results</div><div class="flow-arrow">→</div>
+        <div class="flow-box">📄 PDF Transcript</div>
+      </div>
+    </div>
+    <div class="card-grid g3">
+      <div class="card">
+        <h4>🔐 Authentication Flow</h4>
+        <p>User submits email + password → Firebase Auth validates → Firestore checks role document → Grant/Deny access → Redirect to correct portal</p>
+      </div>
+      <div class="card">
+        <h4>💺 Enrollment Flow</h4>
+        <p>Student clicks Enroll → System checks availableSeats > 0 → Creates enrollment doc → Decrements availableSeats → Updates dashboard</p>
+      </div>
+      <div class="card">
+        <h4>📊 Results Flow</h4>
+        <p>Faculty enters marks → System validates 0–50 range → Calculates total + grade → Stores in results collection → Student views instantly</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5: ARCHITECTURE -->
+<div class="page">
+  <div class="sidebar-accent"></div>
+  <div class="pg">
+    <div class="pg-num">05 / 10</div>
+    <div class="pg-header">
+      <h2>🏗️ System Architecture</h2>
+      <p>Full-stack architecture of EnrollX from UI to database</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+      <div>
+        <div class="arch-layer">
+          <div class="icon">🖥️</div>
+          <div><h4>Frontend – HTML / CSS / JavaScript</h4><p>Responsive UI pages for all 3 portals. Custom CSS design system with cyan theme, animations, dark mode.</p></div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer">
+          <div class="icon">🔐</div>
+          <div><h4>Firebase Authentication</h4><p>Email/password login. Role verification via Firestore collection lookup. Route guards on every page.</p></div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer">
+          <div class="icon">🗄️</div>
+          <div><h4>Cloud Firestore Database</h4><p>6 collections: students, faculty, admins, courses, enrollments, results. Real-time listeners for live updates.</p></div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer">
+          <div class="icon">🌐</div>
+          <div><h4>Firebase Hosting</h4><p>CDN-hosted static site. Global edge deployment. SSL secured. Live at enrollx-c17aa.web.app</p></div>
+        </div>
+      </div>
+      <div>
+        <div class="arch-layer" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac">
+          <div class="icon">🎓</div>
+          <div><h4>Student Module</h4><p>Registration, course browsing, enrollment with seat management, result viewing, CGPA calculation, PDF transcript download</p></div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer" style="background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd">
+          <div class="icon">👨‍🏫</div>
+          <div><h4>Faculty Module</h4><p>Course-based student view, internal + external mark entry, auto grade/GPA calculation, bulk save</p></div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer" style="background:linear-gradient(135deg,#fdf4ff,#fae8ff);border-color:#d8b4fe">
+          <div class="icon">🛡️</div>
+          <div><h4>Admin Module</h4><p>4 role types (Super/Dept/Exam/Placement), CRUD for all entities, analytics charts, course-faculty assignment</p></div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer" style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:#fde68a">
+          <div class="icon">📄</div>
+          <div><h4>PDF Engine</h4><p>Browser print API generates formatted academic transcripts with all results, grades, and CGPA</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6: DATABASE FLOW -->
+<div class="page">
+  <div class="sidebar-accent"></div>
+  <div class="pg">
+    <div class="pg-num">06 / 10</div>
+    <div class="pg-header">
+      <h2>🗄️ Database & Data Flow</h2>
+      <p>Firestore collections and how data moves through the system</p>
+    </div>
+    <div style="background:linear-gradient(135deg,#f0fdff,#e0f9ff);border:1px solid #b3f0ff;border-radius:12px;padding:20px;margin-bottom:18px">
+      <div style="font-size:12px;font-weight:700;color:#005f73;margin-bottom:14px">UI → Firebase Data Flow</div>
+      <div class="flow">
+        <div class="flow-box">📝 Form Input</div><div class="flow-arrow">→</div>
+        <div class="flow-box">✅ Validation</div><div class="flow-arrow">→</div>
+        <div class="flow-box">🔥 Firestore Write</div><div class="flow-arrow">→</div>
+        <div class="flow-box">📡 Real-time Sync</div><div class="flow-arrow">→</div>
+        <div class="flow-box">🖥️ Render UI</div>
+      </div>
+    </div>
+    <div class="card-grid g3">
+      <div class="card"><h4>📦 students</h4><p><b>Doc ID:</b> Firebase Auth UID<br>name, email, studentId, department, semester, phone, role: "student"</p></div>
+      <div class="card"><h4>👨‍🏫 faculty</h4><p><b>Doc ID:</b> Firebase Auth UID<br>name, email, department, designation, phone, role: "faculty"</p></div>
+      <div class="card"><h4>🛡️ admins</h4><p><b>Doc ID:</b> Firebase Auth UID<br>name, email, adminType, adminDepartment, role: "admin"</p></div>
+      <div class="card"><h4>📚 courses</h4><p>courseName, courseCode, credits, department, semester, facultyId, facultyName, totalSeats, availableSeats</p></div>
+      <div class="card"><h4>✅ enrollments</h4><p>studentId, courseId, courseName, status (enrolled/dropped), enrolledAt timestamp</p></div>
+      <div class="card"><h4>📊 results</h4><p>studentId, courseId, facultyId, internalMarks, externalMarks, total, grade, gpaPoints, createdAt</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 7: FEATURES -->
+<div class="page">
+  <div class="sidebar-accent"></div>
+  <div class="pg">
+    <div class="pg-num">07 / 10</div>
+    <div class="pg-header">
+      <h2>⚡ Feature Modules</h2>
+      <p>Core capabilities of the EnrollX platform</p>
+    </div>
+    <div class="card-grid g3">
+      <div class="card" style="border-top:3px solid #005f73">
+        <h4>📚 Smart Course Registration</h4>
+        <p>Browse courses with real-time seat availability. Filter by department, semester, credits. One-click enrollment with automatic seat decrement. Drop courses to restore seats.</p>
+      </div>
+      <div class="card" style="border-top:3px solid #059669">
+        <h4>📊 Result Management</h4>
+        <p>Faculty enter internal (0–50) and external (0–50) marks. System auto-calculates total, letter grade (O/A+/A/B+/B/C/F), GPA points, and semester CGPA.</p>
+      </div>
+      <div class="card" style="border-top:3px solid #2563eb">
+        <h4>🔐 Role-Based Access</h4>
+        <p>4 user types with strict route guards: Student, Faculty, Super Admin, Dept/Exam/Placement Admin. Each user sees only their permitted data and features.</p>
+      </div>
+      <div class="card" style="border-top:3px solid #d97706">
+        <h4>📡 Live Dashboard</h4>
+        <p>Real-time animated counters, interactive doughnut/bar charts, recent activity feeds — all reflecting live Firestore data without page reload.</p>
+      </div>
+      <div class="card" style="border-top:3px solid #00bcd4">
+        <h4>📄 PDF Transcript</h4>
+        <p>Students download beautifully formatted academic transcripts. Includes all results, grades, CGPA, student details — generated via browser print API.</p>
+      </div>
+      <div class="card" style="border-top:3px solid #7c3aed">
+        <h4>🌙 Dark Mode</h4>
+        <p>Full dark/light theme toggle across all pages. CSS custom properties switch instantly. User preference remembered via localStorage.</p>
+      </div>
+      <div class="card" style="border-top:3px solid #dc2626">
+        <h4>🔑 Password Reset</h4>
+        <p>Reset via email or phone number. Email sends Firebase reset link. Phone lookup finds the matching account and sends link to that email.</p>
+      </div>
+      <div class="card" style="border-top:3px solid #9333ea">
+        <h4>👥 Admin Management</h4>
+        <p>Super Admin can add, edit, and delete other administrators. Edit their name, role type, and assigned department. Self-deletion protection built in.</p>
+      </div>
+      <div class="card" style="border-top:3px solid #0891b2">
+        <h4>🏫 Department Scoping</h4>
+        <p>Dept Admins see only their department's students, courses, faculty, and enrollments. Enforced at every Firestore query with department-based filters.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 8: USER FLOWS -->
+<div class="page">
+  <div class="sidebar-accent"></div>
+  <div class="pg">
+    <div class="pg-num">08 / 10</div>
+    <div class="pg-header">
+      <h2>👥 User Role Workflows</h2>
+      <p>Step-by-step process for each user type in EnrollX</p>
+    </div>
+    <div class="card-grid g3">
+      <div class="role-col">
+        <div class="role-header student">🎓 Student Workflow</div>
+        <div class="role-body">
+          <div class="role-step"><div class="role-step-num">1</div><p>Visit <b>login.html</b> or click Register to create a new student account</p></div>
+          <div class="role-step"><div class="role-step-num">2</div><p>Fill registration form: Name, Student ID, Email, Password, Dept, Semester</p></div>
+          <div class="role-step"><div class="role-step-num">3</div><p>Auto-login and redirect to <b>Student Dashboard</b> with stats overview</p></div>
+          <div class="role-step"><div class="role-step-num">4</div><p>Navigate to <b>Browse Courses</b> — filter/search and click Enroll</p></div>
+          <div class="role-step"><div class="role-step-num">5</div><p>Seat is reserved, enrollment doc created in Firestore, dashboard updates</p></div>
+          <div class="role-step"><div class="role-step-num">6</div><p>Navigate to <b>My Results</b> after faculty enters marks — view grades + CGPA</p></div>
+          <div class="role-step"><div class="role-step-num">7</div><p>Click <b>Download Transcript</b> to get PDF with all academic results</p></div>
+        </div>
+      </div>
+      <div class="role-col">
+        <div class="role-header faculty">👨‍🏫 Faculty Workflow</div>
+        <div class="role-body">
+          <div class="role-step"><div class="role-step-num">1</div><p>Admin creates faculty account (Auth + Firestore doc) and shares credentials</p></div>
+          <div class="role-step"><div class="role-step-num">2</div><p>Login via <b>faculty-login.html</b> with assigned email + password</p></div>
+          <div class="role-step"><div class="role-step-num">3</div><p>View <b>Faculty Dashboard</b>: assigned courses, student count, results uploaded</p></div>
+          <div class="role-step"><div class="role-step-num">4</div><p>Click <b>Enrolled Students</b> → select course → view full student list</p></div>
+          <div class="role-step"><div class="role-step-num">5</div><p>Navigate to <b>Manage Results</b> → select course → enter Internal + External marks</p></div>
+          <div class="role-step"><div class="role-step-num">6</div><p>Click <b>Save All</b> — system calculates total, grade, GPA and stores in Firestore</p></div>
+          <div class="role-step"><div class="role-step-num">7</div><p>Students can now view results instantly on their portal</p></div>
+        </div>
+      </div>
+      <div class="role-col">
+        <div class="role-header admin">🛡️ Admin Workflow</div>
+        <div class="role-body">
+          <div class="role-step"><div class="role-step-num">1</div><p>Login via <b>admin-login.html</b> — role verified against admins collection</p></div>
+          <div class="role-step"><div class="role-step-num">2</div><p>View <b>Admin Dashboard</b>: total students, faculty, courses, enrollments, charts</p></div>
+          <div class="role-step"><div class="role-step-num">3</div><p>Go to <b>Courses</b> → Add new course, assign credit hours, seats, department, semester</p></div>
+          <div class="role-step"><div class="role-step-num">4</div><p>Edit course → select faculty from dropdown → Save (course now appears in faculty portal)</p></div>
+          <div class="role-step"><div class="role-step-num">5</div><p>Go to <b>Faculty</b> → Add Faculty → creates Firebase Auth + Firestore doc</p></div>
+          <div class="role-step"><div class="role-step-num">6</div><p>Go to <b>Administrators</b> (Super Admin only) → Add/Edit/Delete admin accounts</p></div>
+          <div class="role-step"><div class="role-step-num">7</div><p>Monitor <b>Students</b> page — view, edit, delete student records</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 9: FUTURE SCOPE -->
+<div class="page">
+  <div class="sidebar-accent"></div>
+  <div class="pg">
+    <div class="pg-num">09 / 10</div>
+    <div class="pg-header">
+      <h2>🚀 Future Scope & Enhancements</h2>
+      <p>Planned features and future development roadmap</p>
+    </div>
+    <div class="card-grid g2">
+      <div class="future-card">
+        <div class="future-icon">🤖</div>
+        <div><h4>AI-Based Course Recommendations</h4><p>Machine learning model analyzes a student's past performance, department, semester, and interests to recommend the most suitable courses. Personalized academic path suggestions.</p></div>
+      </div>
+      <div class="future-card">
+        <div class="future-icon">📍</div>
+        <div><h4>Attendance Tracking System</h4><p>QR code or biometric-based attendance logging. Faculty can mark daily attendance, students can view their attendance percentage per course with alerts for low attendance.</p></div>
+      </div>
+      <div class="future-card">
+        <div class="future-icon">🔔</div>
+        <div><h4>Push Notifications</h4><p>Firebase Cloud Messaging integration for real-time alerts: new results published, seat availability changes, enrollment deadlines, important announcements from admin.</p></div>
+      </div>
+      <div class="future-card">
+        <div class="future-icon">💳</div>
+        <div><h4>Fee Management Module</h4><p>Online fee payment integration (Razorpay/Stripe). Fee receipts, due date reminders, payment history, and installment tracking per student per semester.</p></div>
+      </div>
+      <div class="future-card">
+        <div class="future-icon">📱</div>
+        <div><h4>Mobile App Integration</h4><p>React Native or Flutter mobile app sharing the same Firebase backend. Students can enroll, view results, and download transcripts from their smartphone on the go.</p></div>
+      </div>
+      <div class="future-card">
+        <div class="future-icon">📅</div>
+        <div><h4>Timetable & Schedule Management</h4><p>Faculty can upload class schedules. Students see a personalized weekly timetable based on enrolled courses. Room allocation and clash detection built in.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 10: THANK YOU -->
+<div class="page thankyou">
+  <div style="position:relative;z-index:1">
+    <div style="font-size:36px;margin-bottom:16px">🎓</div>
+    <h2 style="font-size:16px;font-weight:400;opacity:0.7;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px">Final Year Project Presentation</h2>
+    <h1>Thank You</h1>
+    <h2>EnrollX – Smart University Registration System</h2>
+    <p>A complete cloud-based university portal built with Firebase, enabling students to enroll in courses, faculty to manage results, and administrators to oversee the entire institution — all in real-time.</p>
+    <div class="thankyou-links">
+      <div class="thankyou-link">🌐 enrollx-c17aa.web.app</div>
+      <div class="thankyou-link">🎓 Student Portal</div>
+      <div class="thankyou-link">👨‍🏫 Faculty Portal</div>
+      <div class="thankyou-link">🛡️ Admin Panel</div>
+    </div>
+    <div style="font-size:13px;opacity:0.6;margin-bottom:20px">Built with 🔥 Firebase · Firestore · Firebase Hosting · HTML · CSS · JavaScript</div>
+    <div class="tech-row">
+      <div class="tech-badge">🔐 Firebase Auth</div>
+      <div class="tech-badge">🗄️ Firestore</div>
+      <div class="tech-badge">🌐 Firebase Hosting</div>
+      <div class="tech-badge">📄 PDF Transcripts</div>
+      <div class="tech-badge">📊 Chart.js</div>
+      <div class="tech-badge">🌙 Dark Mode</div>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.2);padding:14px 40px;display:flex;justify-content:space-between;font-size:11px;opacity:0.7">
+    <span>EnrollX v1.0 · April 2026</span>
+    <span>10 / 10</span>
+    <span>enrollx-c17aa.web.app</span>
+  </div>
+</div>
+
+</body>
+</html>

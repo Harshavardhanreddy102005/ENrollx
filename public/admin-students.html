@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
-  <nav class="sidebar" style="background: linear-gradient(180deg, #1e1b4b 0%, #312e81 40%, #4c1d95 100%);">
+  <nav class="sidebar" style="background: linear-gradient(180deg, #005f73 0%, #0a9396 50%, #00bcd4 100%);">
     <div class="sidebar-brand"><h4><i class="bi bi-shield-lock-fill"></i> EnrollX</h4><p>Admin Panel</p></div>
     <div class="nav-section">
       <div class="nav-section-title">Main Menu</div>
@@ -58,12 +58,78 @@
                 <th>Department</th>
                 <th>Semester</th>
                 <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="adminStudentsBody">
-              <tr><td colspan="7" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary"></div> Loading...</td></tr>
+              <tr><td colspan="8" class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary"></div> Loading...</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Student Modal -->
+  <div class="modal fade" id="editStudentModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content modal-enrollx">
+        <div class="modal-header" style="background:var(--gradient-primary);">
+          <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Edit Student Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editStudentForm" onsubmit="saveStudentEdit(event)" class="form-enrollx">
+            <input type="hidden" id="editStudentDocId">
+            <div class="mb-3">
+              <label class="form-label">Full Name *</label>
+              <input type="text" class="form-control" id="editStudentName" required>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Student ID</label>
+                <input type="text" class="form-control" id="editStudentRegId" disabled>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Email (Cannot change)</label>
+                <input type="email" class="form-control" id="editStudentEmail" disabled>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Department *</label>
+                <select class="form-select" id="editStudentDept" required>
+                  <option value="" disabled>Select Department</option>
+                  <option value="Computer Science">Computer Science</option>
+                  <option value="Information Technology">Information Technology</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Electrical Engineering">Electrical Engineering</option>
+                  <option value="Mechanical Engineering">Mechanical Engineering</option>
+                  <option value="Civil Engineering">Civil Engineering</option>
+                  <option value="Mathematics">Mathematics</option>
+                  <option value="Physics">Physics</option>
+                  <option value="Business Administration">Business Administration</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Semester *</label>
+                <select class="form-select" id="editStudentSem" required>
+                  <option value="1">Semester 1</option><option value="2">Semester 2</option>
+                  <option value="3">Semester 3</option><option value="4">Semester 4</option>
+                  <option value="5">Semester 5</option><option value="6">Semester 6</option>
+                  <option value="7">Semester 7</option><option value="8">Semester 8</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Phone</label>
+              <input type="tel" class="form-control" id="editStudentPhone">
+            </div>
+            <div class="text-end">
+              <button type="button" class="btn btn-secondary rounded-pill me-2" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary rounded-pill btn-enrollx"><i class="bi bi-check-lg me-2"></i>Save Changes</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

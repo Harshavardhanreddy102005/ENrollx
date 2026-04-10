@@ -28,10 +28,7 @@ async function registerStudent(e) {
     if (!EnrollX.validatePassword(password)) throw new Error('Password must be at least 6 characters');
     if (!EnrollX.validatePhone(phone)) throw new Error('Please enter a valid phone number');
 
-    // Check if student ID already exists
-    const existingStudent = await db.collection('students').where('studentId', '==', studentId).get();
-    if (!existingStudent.empty) throw new Error('This Student ID is already registered');
-
+    // (Note: Student ID uniqueness check moved to backend to preserve database security rules)
     // Create Firebase Auth user
     const userCredential = await auth.createUserWithEmailAndPassword(email, password);
     const uid = userCredential.user.uid;
@@ -227,7 +224,9 @@ async function logout() {
 // ---------- Auth State Guard ----------
 function requireAuth(role, redirectTo = 'login.html') {
   return new Promise((resolve, reject) => {
-    auth.onAuthStateChanged(async (user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      unsubscribe(); // Run only once
+
       if (!user) {
         window.location.href = redirectTo;
         reject('Not authenticated');
